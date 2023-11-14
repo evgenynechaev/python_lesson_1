@@ -7,6 +7,11 @@ def index(request):
     # return HttpResponse('<h1> Главная страница </h1>')
 
 
+def category(request):
+    return render(request, 'main/category.html')
+    # return HttpResponse('<h1> Главная страница </h1>')
+
+
 def about(request):
     return HttpResponse('<h1> О сайте </h1>')
 

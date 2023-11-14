@@ -18,6 +18,7 @@ django-admin startproject project
 
 cd project
 python manage.py runserver
+python manage.py runserver 8000
 python manage.py runserver --insecure
 python manage.py startapp main
 
