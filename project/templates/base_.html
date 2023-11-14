@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Главная {% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1> Главная страница из шаблона</h1>
+    <h5> Заголовок 5</h5>
+    <a href="about/">О сайте</a>
+    <!--
+    <img src="https://imgl.krone.at/scaled/2347804/v0780ce/og_image.jpg" alt="Картинка">
+    -->
+
+    <h1>
+        Заголовок страницы
+    </h1>
+  	<div class='news1'>
+      <h2> Новость 1 </h2>
+      <p> Текст новости 1</p>
+   </div>
+   <div class='news2'>
+      <h2> Новость 2 </h2>
+      <p> Текст новости 2</p>
+   </div>
+</body>
+</html>

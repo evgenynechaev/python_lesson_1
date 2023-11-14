@@ -1,0 +1,22 @@
+python --version
+
+Upgrade PIP
+python -m pip install --upgrade pip
+
+Install Django
+pip install django
+python -m pip install django
+python -m pip install django-bootstrap-v5
+
+pip list
+pip install django-bootstrap-v5
+
+django-admin startproject project
+
+cd project
+python manage.py runserver
+python manage.py runserver --insecure
+python manage.py startapp main
+
+python manage.py makemigrations
+python manage.py migrate

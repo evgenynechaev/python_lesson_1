@@ -1,0 +1,56 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>NEWSROOM - Free Bootstrap Magazine Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="{% static 'img/favicon.ico' %}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">   
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    {% block topbar %} {% include 'topbar.html' %} {% endblock %}
+
+    {% block navbar %} {% include 'navbar.html' %} {% endblock %}
+
+    {% comment %}
+    {% block topnews %} {% include 'topnews.html' %} {% endblock %}
+    {% endcomment %}
+
+    {% block mainnews %} {% include 'mainnews.html' %} {% endblock %}
+
+    {% block featured_news %} {% include 'featured_news.html' %} {% endblock %}
+
+    {% block category_news %} {% include 'category_news.html' %} {% endblock %}
+
+    {% comment %}
+    {% block news_with_sidebar %} {% include 'news_with_sidebar.html' %} {% endblock %}
+    {% endcomment %}
+
+    {% block footer %} {% include 'footer.html' %} {% endblock %}
+
+    {% block back_to_top %} {% include 'back_to_top.html' %} {% endblock %}
+
+    {% block js_libraries %} {% include 'js_libraries.html' %} {% endblock %}
+</body>
+
+</html>
