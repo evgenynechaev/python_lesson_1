@@ -1,5 +1,8 @@
 python --version
 
+pip freeze > requirements.txt
+pip install requirements.txt
+
 Upgrade PIP
 python -m pip install --upgrade pip
 
