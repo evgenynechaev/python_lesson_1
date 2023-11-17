@@ -4,7 +4,7 @@ from . import models
 
 class CategoriesAdmin(admin.ModelAdmin):
     fields = ['name', ('banner',)]
-    list_display = 'id', 'name', 'banner',
+    list_display = 'id', 'name', 'banner', 'banner_tag',
     list_display_links = 'name',
     search_fields = 'name',
 

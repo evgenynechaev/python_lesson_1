@@ -10,4 +10,7 @@ urlpatterns = [
     # path('about/', views.about, name='about'),
     path('contacts/', views.contacts, name='contacts'),
     path('profile/', views.profile, name='profile'),
+
+    path('formcats/', views.formcats, name='formcats'),
+    path('show/', views.get_image, name='show'),
 ]

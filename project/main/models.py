@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
-
+from django.utils.safestring import mark_safe
 
 class Categories(models.Model):
     name = models.CharField(
@@ -20,6 +20,13 @@ class Categories(models.Model):
 
     def __str__(self):
         return self.name
+
+    def banner_tag(self):
+        if self.banner:
+            return mark_safe(f'<img src="{self.banner.url}" width="auto" height="50"/>')
+
+    # def get_absolute_url(self):
+    #     return reverse_lazy('main:guide_test_detail', args=[str(self.id)])
 
     class Meta:
         verbose_name = 'Categories (Категории)'

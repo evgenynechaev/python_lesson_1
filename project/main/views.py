@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
+from . import models
+from . import forms
+
 
 def navbar_active(page: str):
     navbar: dict = {
@@ -297,3 +300,24 @@ def contacts(request):
 
 def page_not_found(request, exception):
     return render(request, 'page_404.html')
+
+
+def formcats(request):
+    form = forms.CategoryForm()
+
+    if request.method == 'POST':
+        new_item = forms.CategoryForm(request.POST, request.FILES)
+        new_item.save()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'main/image_form.html', context)
+
+
+def get_image(request):
+    model = models.Categories.objects.all().first()
+    context = {
+        'model': model,
+    }
+    return render(request, 'main/image_form.html', context)
