@@ -12,16 +12,11 @@ class Categories(models.Model):
         unique=True,
         verbose_name='name (Категория)',
         help_text='Название категории')
-    banner = models.FileField(
-        upload_to='media/',
-        null=True,
-        blank=True,
-        verbose_name='banner (Баннер)')
-    image = models.ImageField(
+    banner = models.ImageField(
         upload_to='images/',
         null=True,
         blank=True,
-        verbose_name='image (Баннер)')
+        verbose_name='banner (Баннер)')
 
     def __str__(self):
         return self.name
