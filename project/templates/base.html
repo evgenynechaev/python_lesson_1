@@ -32,19 +32,24 @@
 
     {% block navbar %} {% include 'navbar.html' %} {% endblock %}
 
-    {% comment %}
-    {% block top_news %} {% include 'top_news.html' %} {% endblock %}
-    {% endcomment %}
+    {% block breadcrump %} {% endblock %}
 
-    {% block main_news %} {% include 'main_news.html' %} {% endblock %}
+    {% block content %} {% endblock %}
 
-    {% block featured_news %} {% include 'featured_news.html' %} {% endblock %}
-
-    {% block category_news %} {% include 'category_news.html' %} {% endblock %}
+    {% block contact %} {% endblock %}
 
     {% comment %}
-    {% block news_with_sidebar %} {% include 'news_with_sidebar.html' %} {% endblock %}
+    {% block top_news %} {% endblock %}
     {% endcomment %}
+
+    {% block main_news %} {% endblock %}
+
+    {% block featured_news %} {% endblock %}
+
+    {% block category_news %} {% endblock %}
+
+    {% block news_with_sidebar %} {% endblock %}
+
 
     {% block footer %} {% include 'footer.html' %} {% endblock %}
 

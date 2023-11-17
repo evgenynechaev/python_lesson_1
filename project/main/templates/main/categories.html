@@ -9,8 +9,7 @@
         <div class="container">
             <nav class="breadcrumb bg-transparent m-0 p-0">
                 <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
-                <a class="breadcrumb-item" href="{% url 'main:categories' %}">{{ category_title }}</a>
-                <span class="breadcrumb-item active">{{ category_name }}</span>
+                <span class="breadcrumb-item active">{{ title }}</span>
             </nav>
         </div>
     </div>
@@ -24,19 +23,21 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
+                        <!--
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                                 <h3 class="m-0">{{ category_name }}</h3>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:categories' %}">Все</a>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="">Все</a>
                             </div>
                         </div>
-                        {% for news in news_list %}
+                        -->
+                        {% for news in categories_news_list %}
                             <div class="col-lg-6">
                                 <div class="position-relative mb-3">
                                     <img class="img-fluid w-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
                                     <div class="overlay position-relative bg-light">
                                         <div class="mb-2" style="font-size: 14px;">
-                                            <a href="{% url 'main:category' name=news.category %}">{{ category_name }}</a>
+                                            <a href="{% url 'main:category' name=news.category %}">{{ news.category_name }}</a>
                                             <span class="px-1">/</span>
                                             <span>{{ news.pub_date }}</span>
                                         </div>

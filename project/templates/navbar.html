@@ -11,9 +11,18 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
                 <div class="navbar-nav mr-auto py-0">
-                    <a href="index.html" class="nav-item nav-link active">Главная</a>
-                    <a href="category.html" class="nav-item nav-link">Категории</a>
-                    <a href="single.html" class="nav-item nav-link">Single News</a>
+                    <a href="{% url 'main:home' %}" class="nav-item nav-link {{ navbar.home }}">Главная</a>
+                    <div class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle {{ navbar.category }}" data-toggle="dropdown">{{category_title}}</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{% url 'main:categories' %}" class="dropdown-item">Все</a>
+                            {% for category in category_list %}
+                                <a href="{% url 'main:category' name=category.id %}" class="dropdown-item">{{ category.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="{% url 'main:news' pk=1 %}" class="nav-item nav-link {{ navbar.news }}">Новость</a>
+                    <!--
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
                         <div class="dropdown-menu rounded-0 m-0">
@@ -22,7 +31,18 @@
                             <a href="#" class="dropdown-item">Menu item 3</a>
                         </div>
                     </div>
-                    <a href="contact.html" class="nav-item nav-link">Контакт</a> <!-- Contact -->
+                    -->
+                    <a href="{% url 'main:contacts' %}" class="nav-item nav-link {{ navbar.contacts }}">Контакты</a> <!-- Contact -->
+                    <a href="{% url 'admin:index' %}" class="nav-item nav-link">Управление</a>
+                    {% if user.is_authenticated %}
+                        <div class="nav-link active">
+                            Пользователь: {{ user.username }}
+                        </div>
+                        <a href="{% url 'logout' %}" class="nav-item nav-link">Выход</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Вход</a>
+                    {% endif %}
+
                 </div>
                 <div class="input-group ml-auto" style="width: 100%; max-width: 300px;">
                     <input type="text" class="form-control" placeholder="Поиск"> <!-- Keyword -->

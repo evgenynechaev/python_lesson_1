@@ -19,7 +19,8 @@ from django.urls import path, include
 
 handler404 = "main.views.page_not_found"
 urlpatterns = [
-    path('admin/', admin.site.urls),
     # path('', include('main.urls')),
     path('', include('main.urls', namespace='main')),
+    path('admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

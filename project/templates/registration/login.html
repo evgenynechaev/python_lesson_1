@@ -1,12 +1,16 @@
-{% load static %}
+{% extends "base.html" %}
 
-    <!-- Contact Start -->
+    {% block title %} Аутентификация {% endblock %}
+
+{% block content %}
+    <!-- Login Start -->
     <div class="container-fluid py-3">
         <div class="container">
             <div class="bg-light py-2 px-4 mb-3">
-                <h3 class="m-0">Contact Us For Any Queries</h3>
+                <h3 class="m-0">Вход</h3>
             </div>
             <div class="row">
+                <!--
                 <div class="col-md-5">
                     <div class="bg-light mb-3" style="padding: 30px;">
                         <h6 class="font-weight-bold">Get in touch</h6>
@@ -34,34 +38,29 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-7">
+                -->
+                <div class="col-md-4">
                     <div class="contact-form bg-light mb-3" style="padding: 30px;">
                         <div id="success"></div>
-                        <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                        <form method="post" action="{% url 'login' %}">
+                            {% csrf_token %}
                             <div class="form-row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="control-group">
-                                        <input type="text" class="form-control p-4" id="name" placeholder="Your Name" required="required" data-validation-required-message="Please enter your name" />
+                                        <input type="text" class="form-control p-4" name="username" placeholder="{{ form.username.label }}" maxlength="10" required="required" data-validation-required-message="Please enter your login" />
                                         <p class="help-block text-danger"></p>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="control-group">
-                                        <input type="email" class="form-control p-4" id="email" placeholder="Your Email" required="required" data-validation-required-message="Please enter your email" />
+                                        <a href="{% url 'password_reset' %}">Забыли пароль?</a>
+                                        <input type="password" class="form-control p-4" name="password" placeholder="{{ form.password.label }}" maxlength="20" required="required" data-validation-required-message="Please enter your password" />
                                         <p class="help-block text-danger"></p>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="control-group">
-                                <input type="text" class="form-control p-4" id="subject" placeholder="Subject" required="required" data-validation-required-message="Please enter a subject" />
-                                <p class="help-block text-danger"></p>
-                            </div>
-                            <div class="control-group">
-                                <textarea class="form-control" rows="4" id="message" placeholder="Message" required="required" data-validation-required-message="Please enter your message"></textarea>
-                                <p class="help-block text-danger"></p>
                             </div>
                             <div>
-                                <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="sendMessageButton">Send Message</button>
+                                <button class="btn btn-primary font-weight-semi-bold px-4" style="width: 100px; height: 50px;" type="submit">Вход</button>
                             </div>
                         </form>
                     </div>
@@ -69,4 +68,8 @@
             </div>
         </div>
     </div>
-    <!-- Contact End -->
+    <!-- Login End -->
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
