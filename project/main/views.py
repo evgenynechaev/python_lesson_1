@@ -273,8 +273,16 @@ def news(request, pk):
     return render(request, 'main/news.html', context)
 
 
-def about(request):
-    return HttpResponse('<h1> О сайте </h1>')
+def profile(request):
+    context = {'title': 'Пользователь',
+               'navbar': navbar_active('home'),
+               'category_title': 'Категории',
+               'category_list': get_category_list(),
+               # 'news': get_news(pk),
+               # 'comment_list': get_comments_list(pk),
+               'profile': 'profile',
+               }
+    return render(request, 'main/profile.html', context)
 
 
 def contacts(request):

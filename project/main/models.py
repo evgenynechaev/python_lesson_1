@@ -17,6 +17,11 @@ class Categories(models.Model):
         null=True,
         blank=True,
         verbose_name='banner (Баннер)')
+    image = models.ImageField(
+        upload_to='images/',
+        null=True,
+        blank=True,
+        verbose_name='image (Баннер)')
 
     def __str__(self):
         return self.name
