@@ -277,13 +277,13 @@ def news(request, pk):
 
 
 def profile(request):
+    current_user = request.user
+    print(current_user)
     context = {'title': 'Пользователь',
                'navbar': navbar_active('home'),
                'category_title': 'Категории',
                'category_list': get_category_list(),
-               # 'news': get_news(pk),
-               # 'comment_list': get_comments_list(pk),
-               'profile': 'profile',
+               'profile': current_user,
                }
     return render(request, 'main/profile.html', context)
 
