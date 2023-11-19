@@ -90,8 +90,12 @@
                             </div>
                             <div class="form-row">
                                 <div class="control-group">
+                                    <!--
                                     <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="change">Изменить</button>
                                     <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="posts">Мои статьи</button>
+                                    -->
+                                    <a href="{% url 'admin:index' %}" class="btn btn-primary px-4" id="change">Изменить</a>
+                                    <a href="" class="btn btn-primary px-4" id="posts">Мои статьи</a>
                                 </div>
                             </div>
                         </form>

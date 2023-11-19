@@ -11,6 +11,7 @@ def navbar_active(page: str):
         'category': '',
         'news': '',
         'contacts': '',
+        'profile': '',
     }
     navbar.update({page: 'active'})
     # print(navbar)
@@ -277,13 +278,11 @@ def news(request, pk):
 
 
 def profile(request):
-    current_user = request.user
-    print(current_user)
     context = {'title': 'Пользователь',
-               'navbar': navbar_active('home'),
+               'navbar': navbar_active('profile'),
                'category_title': 'Категории',
                'category_list': get_category_list(),
-               'profile': current_user,
+               'profile': request.user,
                }
     return render(request, 'main/profile.html', context)
 
