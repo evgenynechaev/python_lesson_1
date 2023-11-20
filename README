@@ -1,2 +1,11 @@
+<h1>Можно проверять</h1>
+
+Python 3.11
+Django 4.2.7
+
+
+pip install requirements.txt
+
 cd project
 python manage.py runserver
+
