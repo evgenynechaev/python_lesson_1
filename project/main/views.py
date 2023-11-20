@@ -212,6 +212,32 @@ def get_comments_list(news_id: int = 1):
         ]
 
 
+def get_main_news_list():
+    main_news_list = []
+    for news in get_news_list()[4:4+6]:
+        new_news = news.copy()
+        category_name = get_category_name(news.get('category'))
+        new_news.update({'category_name': category_name})
+        main_news_list.append(new_news)
+    # print(main_news_list)
+    return main_news_list
+
+
+def get_category_news_dict():
+    main_news_dict = {}
+    for news in get_news_list()[0:16]:
+        new_news = news.copy()
+        category_name = get_category_name(news.get('category'))
+        new_news.update({'category_name': category_name})
+        if category_name in main_news_dict:
+            lst = main_news_dict.get(category_name)
+            lst.append(new_news)
+        else:
+            main_news_dict.update({category_name: [new_news]})
+    print(main_news_dict)
+    return main_news_dict
+
+
 def get_categories_news_list():
     categories_news_list = []
     for news in get_news_list():
@@ -237,6 +263,8 @@ def index(request):
                'navbar': navbar_active('home'),
                'category_title': 'Категории',
                'category_list': get_category_list(),
+               'main_news_list': get_main_news_list(),
+               'category_news_dict': get_category_news_dict(),
                'news_list': get_news_list(),
                }
     # return HttpResponse('<h1> Главная страница </h1>')

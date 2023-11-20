@@ -6,28 +6,19 @@
             <div class="row">
                 <div class="col-lg-8">
                     <div class="owl-carousel owl-carousel-2 carousel-item-1 position-relative mb-3 mb-lg-0">
+                        {% for news in main_news_list %}
                         <div class="position-relative overflow-hidden" style="height: 435px;">
-                            <img class="img-fluid h-100" src="{% static 'img/news-700x435-1.jpg' %}" style="object-fit: cover;">
+                            <img class="img-fluid h-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
                             <div class="overlay">
                                 <div class="mb-1">
-                                    <a class="text-white" href="{% url 'main:category' name='technology' %}">Технологии</a>
+                                    <a class="text-white" href="{% url 'main:category' name=news.category %}">{{ news.category_name }}</a>
                                     <span class="px-2 text-white">/</span>
-                                    <a class="text-white" href="">January 01, 2045</a>
+                                    <a class="text-white" href="">{{ news.pub_date }}</a>
                                 </div>
-                                <a class="h2 m-0 text-white font-weight-bold" href="{% url 'main:news' pk=5%}">Sanctus amet sed amet ipsum lorem. Dolores et erat et elitr sea sed</a>
+                                <a class="h2 m-0 text-white font-weight-bold" href="{% url 'main:news' pk=news.id%}">{{ news.headline }}</a>
                             </div>
                         </div>
-                        <div class="position-relative overflow-hidden" style="height: 435px;">
-                            <img class="img-fluid h-100" src="{% static 'img/news-700x435-2.jpg' %}" style="object-fit: cover;">
-                            <div class="overlay">
-                                <div class="mb-1">
-                                    <a class="text-white" href="{% url 'main:category' name='technology' %}">Технологии</a>
-                                    <span class="px-2 text-white">/</span>
-                                    <a class="text-white" href="">January 01, 2045</a>
-                                </div>
-                                <a class="h2 m-0 text-white font-weight-bold" href="{% url 'main:news' pk=6%}">Sanctus amet sed amet ipsum lorem. Dolores et erat et elitr sea sed</a>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="col-lg-4">
