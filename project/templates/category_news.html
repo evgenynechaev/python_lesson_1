@@ -12,7 +12,7 @@
                     <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
                         {% for news in category_news_list %}
                         <div class="position-relative">
-                            <img class="img-fluid w-100" src="{% static 'img/news-500x280-1.jpg' %}" style="object-fit: cover;">
+                            <img class="img-fluid w-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
                             <div class="overlay position-relative bg-light">
                                 <div class="mb-2" style="font-size: 13px;">
                                     <a href="{% url 'main:category' name=news.category %}">{{ news.category_name }}</a>

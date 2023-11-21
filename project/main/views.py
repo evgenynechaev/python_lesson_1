@@ -234,7 +234,7 @@ def get_category_news_dict():
             lst.append(new_news)
         else:
             main_news_dict.update({category_name: [new_news]})
-    print(main_news_dict)
+    # print(main_news_dict)
     return main_news_dict
 
 

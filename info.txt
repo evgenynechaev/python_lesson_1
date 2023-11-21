@@ -5,7 +5,7 @@ python manage.py runserver
 python --version
 
 pip freeze > requirements.txt
-pip install requirements.txt
+pip install -r requirements.txt
 
 Upgrade PIP
 python -m pip install --upgrade pip
