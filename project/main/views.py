@@ -544,3 +544,4 @@ class ContactView(generic.TemplateView):
             'tag_list': get_tag_list_db(),
         })
         return context
+
