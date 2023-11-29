@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.views import generic
+from django.urls import reverse_lazy
 
 from . import models
 from . import forms
@@ -20,24 +22,52 @@ def navbar_active(page: str):
 
 def get_category_list(category_id=''):
     all_category_list = [
-        {'id': 'business', 'name': 'Бизнес', 'banner': 'img/cat-500x80-1.jpg'},
-        {'id': 'technology', 'name': 'Технологии', 'banner': 'img/cat-500x80-2.jpg'},
-        {'id': 'entertainment', 'name': 'Развлечения', 'banner': 'img/cat-500x80-3.jpg'},
-        {'id': 'sports', 'name': 'Спорт', 'banner': 'img/cat-500x80-4.jpg'},
-        {'id': 'politics', 'name': 'Политика', 'banner': 'img/cat-500x80-1.jpg'},
-        {'id': 'corporate', 'name': 'Корпорации', 'banner': 'img/cat-500x80-2.jpg'},
-        {'id': 'health', 'name': 'Здоровье', 'banner': 'img/cat-500x80-3.jpg'},
-        {'id': 'education', 'name': 'Образование', 'banner': 'img/cat-500x80-4.jpg'},
-        {'id': 'science', 'name': 'Наука', 'banner': 'img/cat-500x80-1.jpg'},
-        {'id': 'foods', 'name': 'Еда', 'banner': 'img/cat-500x80-2.jpg'},
-        {'id': 'travel', 'name': 'Путешествия', 'banner': 'img/cat-500x80-3.jpg'},
-        {'id': 'lifestyle', 'name': 'Стиль жизни', 'banner': 'img/cat-500x80-4.jpg'},
+        {'pk': 1, 'id': 'business', 'name': 'Бизнес', 'banner': 'img/cat-500x80-1.jpg'},
+        {'pk': 2, 'id': 'technology', 'name': 'Технологии', 'banner': 'img/cat-500x80-2.jpg'},
+        {'pk': 3, 'id': 'entertainment', 'name': 'Развлечения', 'banner': 'img/cat-500x80-3.jpg'},
+        {'pk': 4, 'id': 'sports', 'name': 'Спорт', 'banner': 'img/cat-500x80-4.jpg'},
+        {'pk': 5, 'id': 'politics', 'name': 'Политика', 'banner': 'img/cat-500x80-1.jpg'},
+        {'pk': 6, 'id': 'corporate', 'name': 'Корпорации', 'banner': 'img/cat-500x80-2.jpg'},
+        {'pk': 7, 'id': 'health', 'name': 'Здоровье', 'banner': 'img/cat-500x80-3.jpg'},
+        {'pk': 8, 'id': 'education', 'name': 'Образование', 'banner': 'img/cat-500x80-4.jpg'},
+        {'pk': 9, 'id': 'science', 'name': 'Наука', 'banner': 'img/cat-500x80-1.jpg'},
+        {'pk': 10, 'id': 'foods', 'name': 'Еда', 'banner': 'img/cat-500x80-2.jpg'},
+        {'pk': 11, 'id': 'travel', 'name': 'Путешествия', 'banner': 'img/cat-500x80-3.jpg'},
+        {'pk': 12, 'id': 'lifestyle', 'name': 'Стиль жизни', 'banner': 'img/cat-500x80-4.jpg'},
     ]
     # if category_id == '':
     #     return all_category_list
     # category_list = [item for item in all_category_list if item.get('id') == category_id]
     # return category_list
     return all_category_list
+
+
+def get_category_list_db():
+    category_list = models.Category.objects.all().values('id', 'title', 'banner')
+    # print('get_category_list_db')
+    # print(category_list)
+    # for category in category_list:
+    #     print(category.get('banner'))
+    return category_list
+
+
+def get_tag_list_db():
+    tag_list = models.Tag.objects.all().values('id', 'title')
+    return tag_list
+
+
+def get_category_name_by_pk(category_pk):
+    for item in get_category_list():
+        if item.get('pk') == category_pk:
+            return item.get('name')
+    return ''
+
+
+def get_category_pk_by_id(category_id):
+    for item in get_category_list():
+        if item.get('id') == category_id:
+            return item.get('pk')
+    return ''
 
 
 def get_category_name(category_id):
@@ -47,7 +77,14 @@ def get_category_name(category_id):
     return ''
 
 
-def get_news_list(category_name: str = ''):
+def get_category_id(category_pk):
+    for item in get_category_list():
+        if item.get('pk') == category_pk:
+            return item.get('id')
+    return ''
+
+
+def get_all_news_list():
     all_news_list = [
         {'id': 1, 'category': 'business', 'author': 'John Doe', 'headline': 'Бизнес новость 1',
          'content': 'Вот это новость 1. Новость. Новость. Новость. Новость. Новость.',
@@ -157,9 +194,29 @@ def get_news_list(category_name: str = ''):
          'content': 'Вот это новость 32. Новость. Новость. Новость. Новость. Новость.',
          'banner': 'img/cat-500x80-4.jpg', 'pub_date': '2023-12-03 8:00'},
     ]
+    for news in all_news_list:
+        category_pk = get_category_pk_by_id(news.get('category'))
+        news.update({
+            'category_pk': category_pk,
+        })
+    return all_news_list
+
+
+def get_news_list(category_name: str = ''):
+    all_news_list = get_all_news_list()
     if category_name == '':
         return all_news_list
     news_list = [item for item in all_news_list if item.get('category') == category_name]
+    # print(news_list)
+    return news_list
+
+
+def get_news_list_pk(category_pk: int = 0):
+    all_news_list = get_all_news_list()
+    if category_pk == 0:
+        return all_news_list
+    category_id = get_category_id(category_pk)
+    news_list = [item for item in all_news_list if item.get('category') == category_id]
     # print(news_list)
     return news_list
 
@@ -217,7 +274,15 @@ def get_main_news_list():
     for news in get_news_list()[4:4+6]:
         new_news = news.copy()
         category_name = get_category_name(news.get('category'))
-        new_news.update({'category_name': category_name})
+        print('category_name')
+        print(category_name)
+        category_pk = get_category_pk_by_id(news.get('category'))
+        print('category_pk')
+        print(category_pk)
+        new_news.update({
+            'category_pk': category_pk,
+            'category_name': category_name,
+        })
         main_news_list.append(new_news)
     # print(main_news_list)
     return main_news_list
@@ -228,7 +293,11 @@ def get_category_news_dict():
     for news in get_news_list()[0:16]:
         new_news = news.copy()
         category_name = get_category_name(news.get('category'))
-        new_news.update({'category_name': category_name})
+        category_pk = get_category_pk_by_id(news.get('category'))
+        new_news.update({
+            'category_pk': category_pk,
+            'category_name': category_name,
+        })
         if category_name in main_news_dict:
             lst = main_news_dict.get(category_name)
             lst.append(new_news)
@@ -263,6 +332,7 @@ def index(request):
                'navbar': navbar_active('home'),
                'category_title': 'Категории',
                'category_list': get_category_list(),
+               'category_list_db': get_category_list_db(),
                'main_news_list': get_main_news_list(),
                'category_news_dict': get_category_news_dict(),
                'news_list': get_news_list(),
@@ -282,14 +352,14 @@ def categories(request):
     return render(request, 'main/categories.html', context)
 
 
-def category(request, name):
+def category(request, title):
     # print(name)
     context = {'title': 'Категория',
                'navbar': navbar_active('category'),
                'category_title': 'Категории',
                'category_list': get_category_list(),
-               'category_name': get_category_name(name),
-               'news_list': get_news_list(name),
+               'category_name': get_category_name(title),
+               'news_list': get_news_list(title),
                }
     return render(request, 'main/category.html', context)
 
@@ -348,3 +418,129 @@ def get_image(request):
         'model': model,
     }
     return render(request, 'main/image_form.html', context)
+
+
+class ProfileView(generic.edit.FormView):
+    template_name = 'main/profile.html'
+    form_class = forms.ProfileForm
+    success_url = reverse_lazy('main:home')
+
+    # def form_valid(self, form):
+    #     form.fill(self.request.user)
+    #     return super().form_valid(form)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context['guide_link'] = 'help'
+    #     return context
+
+
+class ArticleCreateView(generic.edit.CreateView):
+    template_name = 'main/article_create.html'
+    model = models.Article
+    form_class = forms.ArticleForm
+    success_url = reverse_lazy('main:home')
+
+    def form_valid(self, form):
+        # offset: str = '+0500'
+        # date_name: str = self.request.POST.get('work_create_dt_date')
+        # time_name: str = self.request.POST.get('work_create_dt_time')
+        # print(f'{date_name=}')
+        # print(datetime.strptime(f'{date_name} {time_name}{offset}', '%Y-%m-%d %H:%M%z'))
+        # form.instance.dt = datetime.strptime(f'{date_name} {time_name}{offset}', '%Y-%m-%d %H:%M%z')
+        # form.instance.created_by = self.request.user
+        # form.instance.created_name = form.get_name(self.request.user)
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        return context
+
+
+class IndexView(generic.TemplateView):
+    template_name = 'main/index.html'
+    # model = models.Article
+    # form_class = forms.ArticleForm
+    # success_url = reverse_lazy('main:home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        print(get_category_list_db())
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        context.update({
+            'title': 'Главная страница',
+            'navbar': navbar_active('home'),
+            'category_title': 'Категории',
+            # 'category_list': get_category_list(),
+            # 'category_list_db': get_category_list_db(),
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+            'main_news_list': get_main_news_list(),
+            'category_news_dict': get_category_news_dict(),
+            'news_list': get_news_list(),
+        })
+        return context
+
+
+class CategoryView(generic.TemplateView):
+    template_name = 'main/category.html'
+    # model = models.Article
+    # form_class = forms.ArticleForm
+    # success_url = reverse_lazy('main:home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # print(context)
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        context.update({
+            'title': 'Категория',
+            'navbar': navbar_active('category'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'category_name': get_category_name_by_pk(context.get('pk')),
+            'tag_list': get_tag_list_db(),
+            'news_list': get_news_list_pk(context.get('pk')),
+        })
+        return context
+
+
+class ArticleView(generic.TemplateView):
+    template_name = 'main/news.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Новость',
+            'navbar': navbar_active('news'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+            'news': get_news(context.get('pk')),
+            'comment_list': get_comments_list(context.get('pk')),
+        })
+        return context
+
+
+class ContactView(generic.TemplateView):
+    template_name = 'main/contacts.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Контакты',
+            'navbar': navbar_active('contacts'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+        })
+        return context

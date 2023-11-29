@@ -6,6 +6,7 @@ python --version
 
 pip freeze > requirements.txt
 pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 Upgrade PIP
 python -m pip install --upgrade pip
@@ -13,11 +14,11 @@ python -m pip install --upgrade pip
 Install Django
 pip install django
 python -m pip install django
-python -m pip install django-bootstrap-v5
+python -m pip install django-bootstrap4
+python -m pip install crispy-bootstrap4
 python -m pip install Pillow
 
 pip list
-pip install django-bootstrap-v5
 
 django-admin startproject project
 

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+    {% block title %} Новая новость {% endblock %}
+
+    {% block breadcrump %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="container">
+            <nav class="breadcrumb bg-transparent m-0 p-0">
+                <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
+                <span class="breadcrumb-item active">Новая новость</span>
+            </nav>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+    {% endblock %}
+
+    {% block content %}
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_div }}
+            <button type="submit">Создать</button>
+        </form>
+    {% endblock %}

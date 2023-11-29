@@ -36,7 +36,7 @@
                                     <img class="img-fluid w-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
                                     <div class="overlay position-relative bg-light">
                                         <div class="mb-2" style="font-size: 14px;">
-                                            <a href="{% url 'main:category' name=news.category %}">{{ category_name }}</a>
+                                            <a href="{% url 'main:category' pk=news.category_pk %}">{{ category_name }}</a>
                                             <span class="px-1">/</span>
                                             <span>{{ news.pub_date }}</span>
                                         </div>

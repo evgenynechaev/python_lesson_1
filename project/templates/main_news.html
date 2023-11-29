@@ -11,7 +11,7 @@
                             <img class="img-fluid h-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
                             <div class="overlay">
                                 <div class="mb-1">
-                                    <a class="text-white" href="{% url 'main:category' name=news.category %}">{{ news.category_name }}</a>
+                                    <a class="text-white" href="{% url 'main:category' pk=news.category_pk %}">{{ news.category_name }}</a>
                                     <span class="px-2 text-white">/</span>
                                     <a class="text-white" href="">{{ news.pub_date }}</a>
                                 </div>

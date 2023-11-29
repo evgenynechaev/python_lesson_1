@@ -3,13 +3,26 @@ from . import views
 
 app_name = 'main'
 urlpatterns = [
-    path('', views.index, name='home'),
+    # path('', views.index, name='home'),
+    path('', views.IndexView.as_view(), name='home'),
+
     path('categories/', views.categories, name='categories'),
-    path('category/<str:name>', views.category, name='category'),
-    path('news/<int:pk>', views.news, name='news'),
+
+    # path('category/<int:id>', views.category, name='category'),
+    path('category/<int:pk>/', views.CategoryView.as_view(), name='category'),
+
+    path('article/create', views.ArticleCreateView.as_view(), name='article_create'),
+
+    # path('news/<int:pk>', views.news, name='news'),
+    path('news/<int:pk>', views.ArticleView.as_view(), name='news'),
+
     # path('about/', views.about, name='about'),
-    path('contacts/', views.contacts, name='contacts'),
-    path('profile/', views.profile, name='profile'),
+
+    # path('contacts/', views.contacts, name='contacts'),
+    path('contacts/', views.ContactView.as_view(), name='contacts'),
+
+    # path('profile/', views.profile, name='profile'),
+    path('profile/', views.ProfileView.as_view(), name='profile'),
 
     path('formcats/', views.formcats, name='formcats'),
     path('show/', views.get_image, name='show'),

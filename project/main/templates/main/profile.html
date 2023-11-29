@@ -22,6 +22,12 @@
             <div class="bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Профиль пользователя</h3>
             </div>
+            <form method="post">
+               {% csrf_token %}
+                {{ form.as_div }}
+                <button type="submit">Применить</button>
+            </form>
+
             <div class="row">
                 <!--
                 <div class="col-md-5">
@@ -96,6 +102,7 @@
                                     -->
                                     <a href="{% url 'admin:index' %}" class="btn btn-primary px-4" id="change">Изменить</a>
                                     <a href="" class="btn btn-primary px-4" id="posts">Мои статьи</a>
+                                    <a href="{% url 'main:article_create' %}" class="btn btn-primary px-4" id="new_posts">Новая новость</a>
                                 </div>
                             </div>
                         </form>

@@ -10,7 +10,7 @@
             <nav class="breadcrumb bg-transparent m-0 p-0">
                 <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
                 <a class="breadcrumb-item" href="{% url 'main:categories' %}">{{ category_title }}</a>
-                <a class="breadcrumb-item" href="{% url 'main:category' name=news.category %}">{{ news.category_name }}</a>
+                <a class="breadcrumb-item" href="{% url 'main:category' pk=news.category_pk %}">{{ news.category_name }}</a>
                 <span class="breadcrumb-item active">{{ news.headline }}</span>
             </nav>
         </div>
@@ -29,7 +29,7 @@
                         <img class="img-fluid w-100" src="{% static 'img/news-700x435-2.jpg' %}" style="object-fit: cover;">
                         <div class="overlay position-relative bg-light">
                             <div class="mb-3">
-                                <a href="{% url 'main:category' name=news.category %}">{{ news.category_name }}</a>
+                                <a href="{% url 'main:category' pk=news.category_pk %}">{{ news.category_name }}</a>
                                 <span class="px-1">/</span>
                                 <span>{{ news.pub_date }}</span>
                             </div>
