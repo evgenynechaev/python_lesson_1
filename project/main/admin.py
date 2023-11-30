@@ -30,7 +30,7 @@ admin.site.register(models.Tag, TagAdmin)
 
 class ArticlesAdmin(admin.ModelAdmin):
     fields = ['category', ('title', 'content'), 'banner', 'author', 'pub_date', 'tags']
-    list_display = 'id', 'category', 'title', 'author', 'pub_date', 'created_by', 'created_at', '_tags'
+    list_display = 'id', 'category', 'title', 'pub_date', 'created_by', 'created_at', '_tags'
     list_display_links = 'id', 'title',
     search_fields = 'category', 'title', 'author', 'pub_date',
 

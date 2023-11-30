@@ -14,6 +14,7 @@ def navbar_active(page: str):
         'news': '',
         'contacts': '',
         'profile': '',
+        'signup': '',
     }
     navbar.update({page: 'active'})
     # print(navbar)
@@ -420,6 +421,24 @@ def get_image(request):
     return render(request, 'main/image_form.html', context)
 
 
+class SignUpView(generic.CreateView):
+    # form_class = UserCreationForm
+    form_class = forms.UserRegisterForm
+    success_url = reverse_lazy('login')
+    template_name = 'accounts/signup.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Регистрация',
+            'navbar': navbar_active('signup'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+        })
+        return context
+
+
 class ProfileView(generic.edit.FormView):
     template_name = 'main/profile.html'
     form_class = forms.ProfileForm
@@ -433,6 +452,42 @@ class ProfileView(generic.edit.FormView):
     #     context = super().get_context_data(**kwargs)
     #     context['guide_link'] = 'help'
     #     return context
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Профиль',
+            'navbar': navbar_active('profile'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+        })
+        return context
+
+
+class ProfileInfoView(generic.detail.DetailView):
+    template_name = 'main/profile_info.html'
+    model = models.Account
+    context_object_name = 'account'
+    form_class = forms.ProfileForm
+    success_url = reverse_lazy('main:home')
+
+    # def form_valid(self, form):
+    #     form.fill(self.request.user)
+    #     return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        users = models.Account.objects.all()
+        page_user = get_object_or_404(models.Account, id=self.kwargs['pk'])
+        context.update({
+            'title': 'Профиль',
+            'navbar': navbar_active('profile'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+        })
+        return context
 
 
 class ArticleCreateView(generic.edit.CreateView):

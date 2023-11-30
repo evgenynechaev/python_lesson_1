@@ -3,8 +3,9 @@ from . import views
 
 app_name = 'main'
 urlpatterns = [
-    # path('', views.index, name='home'),
     path('', views.IndexView.as_view(), name='home'),
+
+    path('signup/', views.SignUpView.as_view(), name='signup'),
 
     path('categories/', views.categories, name='categories'),
 
@@ -23,6 +24,7 @@ urlpatterns = [
 
     # path('profile/', views.profile, name='profile'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    path('profile_info/', views.ProfileInfoView.as_view(), name='profile_info'),
 
     path('formcats/', views.formcats, name='formcats'),
     path('show/', views.get_image, name='show'),

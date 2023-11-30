@@ -1,31 +1,6 @@
-from zoneinfo import ZoneInfo
-from datetime import datetime
-
-from django import forms
-from django.forms import widgets
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
-from . import models
-
-zone = ZoneInfo('Asia/Yekaterinburg')
-
-
-def get_name(user) -> str:
-    return f"{user.first_name} {user.last_name}"
-
-
-def get_datetime_now():
-    # return datetime.now(tz=pytz.timezone("Asia/Yekaterinburg"))
-    return datetime.now(zone)
-
-
-class BaseForm(forms.ModelForm):
-    def get_name(self, user) -> str:
-        return get_name(user)
-
-    def get_datetime_now(self):
-        return datetime.now(zone)
+from django import forms
 
 
 class UserRegisterForm(UserCreationForm):
@@ -70,44 +45,4 @@ class UserRegisterForm(UserCreationForm):
             'username': 'Пользователь',
         }
         help_texts = {
-        }
-
-
-class ProfileForm(BaseForm):
-    class Meta:
-        model = models.Account
-        fields = 'nickname', 'birthday', 'gender', 'avatar',
-        widgets = {
-        }
-        labels = {
-            'nickname': 'Работник',
-            'birthday': 'Дата рождения',
-            'gender': 'Пол',
-            'avatar': 'Аватар',
-        }
-        help_texts = {
-            'name': 'Фамилия И.О.',
-        }
-        error_messages = {
-            'name': {
-                'max_length': "Фамилия И.О. слишком длинное",
-            },
-        }
-
-
-class CategoryForm(forms.ModelForm):
-    class Meta:
-        model = models.Category
-        fields = 'title', 'banner',
-        widgets = {
-            'title': widgets.TextInput(attrs={'class': 'input', 'placeholder': 'Заголовок'}),
-            'banner': widgets.FileInput(attrs={'class': 'input', 'placeholder': 'Image'}),
-        }
-
-
-class ArticleForm(forms.ModelForm):
-    class Meta:
-        model = models.Article
-        fields = 'category', 'title', 'content', 'banner',
-        widgets = {
         }

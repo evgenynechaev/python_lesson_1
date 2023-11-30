@@ -38,6 +38,7 @@
                         <a href="{% url 'admin:index' %}" class="nav-item nav-link">Admin</a>
                     {% else %}
                         <a href="{% url 'main:profile' %}" class="nav-item nav-link {{ navbar.profile }}">Профиль</a>
+                        <a href="{% url 'main:signup' %}" class="nav-item nav-link {{ navbar.signup }}">Регистрация</a>
                     {% endif %}
 
                 </div>

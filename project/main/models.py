@@ -23,21 +23,27 @@ class BaseModel(models.Model):
 class Account(models.Model):
     gender_choices = (('M', 'Мужчина'),
                       ('F', 'Женщина'),
-                      ('No', 'Не выбрано'))
+                      ('U', 'Не выбрано'))
     user = models.OneToOneField(
         User,
+        null=False,
         on_delete=models.CASCADE,
         primary_key=True)
     nickname = models.CharField(
-        max_length=100)
+        null=True,
+        max_length=20)
     birthday = models.DateField(
         null=True,
-        blank=False)
-    gender = models.CharField(choices=gender_choices, max_length=2)
-    account_image = models.ImageField(
+        blank=True)
+    gender = models.CharField(
+        null=True,
+        default='U',
+        choices=gender_choices,
+        max_length=1)
+    avatar = models.ImageField(
         # default='default.jpg',
         null=True,
-        blank=False,
+        blank=True,
         upload_to='account_images')
 
     def __str__(self):
@@ -90,9 +96,9 @@ class Tag(models.Model):
 
 class Article(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    author = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE)
+    # author = models.ForeignKey(
+    #     User,
+    #     on_delete=models.CASCADE)
     title = models.CharField(
         max_length=200,
         db_index=False,
@@ -147,46 +153,13 @@ class ArticleViews(models.Model):
         on_delete=models.CASCADE,
         primary_key=True)
     count_views = models.PositiveIntegerField(
-        default=0)
-
-
-"""
-class News(models.Model):
-    category = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    headline = models.CharField(
-        max_length=200,
-        db_index=False,
-        null=False,
-        blank=False,
-        unique=False,
-        verbose_name='headline (Заголовок)',
-        help_text='Заголовок новости')
-    content = models.TextField(
-        db_index=False,
-        null=False,
-        blank=False,
-        unique=False,
-        verbose_name='content (Новость)',
-        help_text='Содержание новости')
-    banner = models.FileField(
-        upload_to='media/',
-        null=True,
-        blank=True,
-        verbose_name='banner (Баннер)')
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE)
-    pub_date = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='created_at (Дата создания)')
-
-    def __str__(self):
-        return self.headline
+        default=0,
+        verbose_name='count_views (Количество просмотров)',
+        help_text='Количество просмотров новости')
 
     class Meta:
-        verbose_name = 'News (Новость)'
-        verbose_name_plural = 'News (Новость)'
-"""
+        verbose_name = 'ArticleViews (Количество просмотров)'
+        verbose_name_plural = 'ArticleViews (Количество просмотров)'
 
 
 class Comments(BaseModel):

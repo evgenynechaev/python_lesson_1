@@ -21,9 +21,9 @@ from django.conf.urls.static import static
 
 handler404 = "main.views.page_not_found"
 urlpatterns = [
-    # path('', include('main.urls')),
-    path('', include('main.urls', namespace='main')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include('accounts.urls')),
+    # path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('', include('main.urls', namespace='main')),
+    # path('', include('main.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
