@@ -106,14 +106,14 @@ class Article(BaseModel):
         blank=False,
         unique=False,
         verbose_name='title (Заголовок)',
-        help_text='Заголовок новости')
+        help_text='Заголовок статьи')
     content = models.TextField(
         db_index=False,
         null=False,
         blank=False,
         unique=False,
         verbose_name='content (Содержание)',
-        help_text='Содержание новости')
+        help_text='Содержание статьи')
     banner = models.FileField(
         upload_to='media/',
         null=True,
@@ -121,6 +121,8 @@ class Article(BaseModel):
         verbose_name='banner (Баннер)')
     pub_date = models.DateTimeField(
         # auto_now_add=True,
+        null=True,
+        blank=True,
         verbose_name='pub_date (Дата публикации)',
         help_text='Дата публикации')
     tags = models.ManyToManyField(to=Tag, blank=True)
@@ -143,8 +145,8 @@ class Article(BaseModel):
 
     class Meta:
         ordering = ['title', 'pub_date']
-        verbose_name = 'Article (Новость)'
-        verbose_name_plural = 'Articles (Новости)'
+        verbose_name = 'Article (Статья)'
+        verbose_name_plural = 'Articles (Статьи)'
 
 
 class ArticleViews(models.Model):

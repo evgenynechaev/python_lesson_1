@@ -13,6 +13,9 @@ urlpatterns = [
     path('category/<int:pk>/', views.CategoryView.as_view(), name='category'),
 
     path('article/create', views.ArticleCreateView.as_view(), name='article_create'),
+    path('article/<int:pk>/', views.ArticleDetailView.as_view(), name='article_detail'),
+    path('article/<int:pk>/update/', views.ArticleUpdateView.as_view(), name='article_update'),
+    path('article/<int:pk>/delete/', views.ArticleDeleteView.as_view(), name='article_delete'),
 
     # path('news/<int:pk>', views.news, name='news'),
     path('news/<int:pk>', views.ArticleView.as_view(), name='news'),

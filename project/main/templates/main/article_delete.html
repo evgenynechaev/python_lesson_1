@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Новая статья {% endblock %}
+{% block title %} Новая новость {% endblock %}
 
 {% block breadcrump %}
     <!-- Breadcrumb Start -->
@@ -8,34 +8,40 @@
         <div class="container">
             <nav class="breadcrumb bg-transparent m-0 p-0">
                 <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
-                <span class="breadcrumb-item active">Новая статья</span>
+                <span class="breadcrumb-item active">Удаление статьи</span>
             </nav>
         </div>
     </div>
     <!-- Breadcrumb End -->
 {% endblock %}
 
+
+    <div class="col column items-center q-gutter-y-md">
+        <div class="text-h5" style="">Удаление заявки</div>
+        <q-form method="post" class="column q-gutter-y-sm items-center">
+            {% csrf_token %}
+            <div class="text-h5">Удалить заявку {{ ticket_name }}?</div>
+            <q-btn type="submit" color="purple" label="Удалить"></q-btn>
+        </q-form>
+    </div>
+
+
 {% block content %}
     <!-- Article Start -->
     <div class="container-fluid py-3">
         <div class="container">
             <div class="bg-light py-2 px-4 mb-3">
-                <h3 class="m-0">Новая статья</h3>
+                <h3 class="m-0">Удаление статьи</h3>
             </div>
             <div class="row">
                 <div class="col-md-8">
                     <div class="contact-form bg-light mb-3" style="padding: 30px;">
                         <form method="post">
                             {% csrf_token %}
-                            <div class="form-row">
-                                <div class="col-md-12">
-                                    <div class="control-group">
-                                        {{ form.as_p }}
-                                    </div>
-                                </div>
-                            </div>
+                            <h3>Удалить {{ article.title }}?</h3>
+                            <a class="btn btn-warning" href="{% url 'main:home' %}">Главная</a>
                             <div>
-                                <button class="btn btn-primary font-weight-semi-bold px-4" style="width: 120px; height: 50px;" type="submit">Создать</button>
+                                <button class="btn btn-primary font-weight-semi-bold px-4" style="width: 120px; height: 50px;" type="submit">Удалить</button>
                             </div>
                         </form>
                     </div>

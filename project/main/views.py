@@ -11,6 +11,7 @@ def navbar_active(page: str):
     navbar: dict = {
         'home': '',
         'category': '',
+        'article': '',
         'news': '',
         'contacts': '',
         'profile': '',
@@ -275,11 +276,11 @@ def get_main_news_list():
     for news in get_news_list()[4:4+6]:
         new_news = news.copy()
         category_name = get_category_name(news.get('category'))
-        print('category_name')
-        print(category_name)
+        # print('category_name')
+        # print(category_name)
         category_pk = get_category_pk_by_id(news.get('category'))
-        print('category_pk')
-        print(category_pk)
+        # print('category_pk')
+        # print(category_pk)
         new_news.update({
             'category_pk': category_pk,
             'category_name': category_name,
@@ -490,32 +491,6 @@ class ProfileInfoView(generic.detail.DetailView):
         return context
 
 
-class ArticleCreateView(generic.edit.CreateView):
-    template_name = 'main/article_create.html'
-    model = models.Article
-    form_class = forms.ArticleForm
-    success_url = reverse_lazy('main:home')
-
-    def form_valid(self, form):
-        # offset: str = '+0500'
-        # date_name: str = self.request.POST.get('work_create_dt_date')
-        # time_name: str = self.request.POST.get('work_create_dt_time')
-        # print(f'{date_name=}')
-        # print(datetime.strptime(f'{date_name} {time_name}{offset}', '%Y-%m-%d %H:%M%z'))
-        # form.instance.dt = datetime.strptime(f'{date_name} {time_name}{offset}', '%Y-%m-%d %H:%M%z')
-        # form.instance.created_by = self.request.user
-        # form.instance.created_name = form.get_name(self.request.user)
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # dt = forms.get_datetime_now()
-        # print(f'{dt=}')
-        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
-        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
-        return context
-
-
 class IndexView(generic.TemplateView):
     template_name = 'main/index.html'
     # model = models.Article
@@ -524,7 +499,7 @@ class IndexView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        print(get_category_list_db())
+        # print(get_category_list_db())
         # dt = forms.get_datetime_now()
         # print(f'{dt=}')
         # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
@@ -582,6 +557,104 @@ class ArticleView(generic.TemplateView):
             'tag_list': get_tag_list_db(),
             'news': get_news(context.get('pk')),
             'comment_list': get_comments_list(context.get('pk')),
+        })
+        return context
+
+
+class ArticleDetailView(generic.DetailView):
+    model = models.Article
+    template_name = 'main/article_detail.html'
+    context_object_name = 'article'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Новость',
+            'navbar': navbar_active('news'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+            # 'news': get_news(context.get('pk')),
+            # 'comment_list': get_comments_list(context.get('pk')),
+        })
+        return context
+
+
+class ArticleCreateView(generic.edit.CreateView):
+    template_name = 'main/article_create.html'
+    model = models.Article
+    form_class = forms.ArticleForm
+    success_url = reverse_lazy('main:home')
+
+    def form_valid(self, form):
+        # offset: str = '+0500'
+        # date_name: str = self.request.POST.get('work_create_dt_date')
+        # time_name: str = self.request.POST.get('work_create_dt_time')
+        # print(f'{date_name=}')
+        # print(datetime.strptime(f'{date_name} {time_name}{offset}', '%Y-%m-%d %H:%M%z'))
+        # form.instance.dt = datetime.strptime(f'{date_name} {time_name}{offset}', '%Y-%m-%d %H:%M%z')
+        form.instance.created_by = self.request.user
+        # form.instance.created_name = form.get_name(self.request.user)
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        context.update({
+            'title': 'Новая новость',
+            'navbar': navbar_active('news'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+            # 'news': get_news(context.get('pk')),
+            # 'comment_list': get_comments_list(context.get('pk')),
+        })
+        return context
+
+
+class ArticleUpdateView(generic.UpdateView):
+    template_name = 'main/article_update.html'
+    model = models.Article
+    form_class = forms.ArticleForm
+    success_url = reverse_lazy('main:home')
+    # fields = ['title','anouncement','text','tags']
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        context.update({
+            'title': 'Изменить статью',
+            'navbar': navbar_active('news'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+        })
+        return context
+
+
+class ArticleDeleteView(generic.DeleteView):
+    template_name = 'main/article_delete.html'
+    model = models.Article
+    success_url = reverse_lazy('main:home')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        context.update({
+            'title': 'Удалить статью',
+            'navbar': navbar_active('news'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
         })
         return context
 

@@ -10,6 +10,8 @@ from . import models
 
 zone = ZoneInfo('Asia/Yekaterinburg')
 
+_input_class = 'form-control p-4'
+
 
 def get_name(user) -> str:
     return f"{user.first_name} {user.last_name}"
@@ -29,7 +31,7 @@ class BaseForm(forms.ModelForm):
 
 
 class UserRegisterForm(UserCreationForm):
-    _input_class = 'form-control p-4'
+    # _input_class = 'form-control p-4'
     password1 = forms.CharField(
         label='Пароль',
         widget=forms.PasswordInput(attrs={
@@ -58,7 +60,7 @@ class UserRegisterForm(UserCreationForm):
     """
 
     class Meta:
-        _input_class = 'form-control p-4'
+        # _input_class = 'form-control p-4'
         model = User
         fields = 'username', 'password1', 'password2'
         widgets = {
@@ -105,9 +107,33 @@ class CategoryForm(forms.ModelForm):
         }
 
 
-class ArticleForm(forms.ModelForm):
+class ArticleForm(BaseForm):
+    banner = forms.ImageField(label='Баннер', required=False)
+
     class Meta:
         model = models.Article
         fields = 'category', 'title', 'content', 'banner',
         widgets = {
+            'category': forms.Select(attrs={
+                'class': 'form-control'}),
+            'title': forms.TextInput(attrs={
+                'class': _input_class,
+                'placeholder': 'Заголовок статьи'}),
+            'content': forms.Textarea(attrs={
+                'cols': 80,
+                'rows': 10,
+                'class': _input_class,
+                'placeholder': 'Текст статьи'}),
+            # 'banner': forms.ImageField(
+            #     label='Banner')
+        }
+        labels = {
+            'category': 'Категория',
+            'title': 'Заголовок',
+            'content': 'Статья',
+            'banner': 'Баннер',
+        }
+        help_texts = {
+        }
+        error_messages = {
         }
