@@ -30,18 +30,18 @@
                                 <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:categories' %}">Все</a>
                             </div>
                         </div>
-                        {% for news in news_list %}
+                        {% for article in article_list %}
                             <div class="col-lg-6">
                                 <div class="position-relative mb-3">
-                                    <img class="img-fluid w-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
+                                    <img class="img-fluid w-100" src="{% static ''|add:article.banner %}" style="object-fit: cover;">
                                     <div class="overlay position-relative bg-light">
                                         <div class="mb-2" style="font-size: 14px;">
-                                            <a href="{% url 'main:category' pk=news.category_pk %}">{{ category_name }}</a>
+                                            <a href="{% url 'main:category' pk=article.category__pk %}">{{ article.category__title }}</a>
                                             <span class="px-1">/</span>
-                                            <span>{{ news.pub_date }}</span>
+                                            <span>{{ article.pub_date }}</span>
                                         </div>
-                                        <a class="h4" href="{% url 'main:news' pk=news.id%}">{{ news.headline }}</a>
-                                        <p class="m-0">{{ news.content }}...</p>
+                                        <a class="h4" href="{% url 'main:article_detail' pk=article.pk %}">{{ article.title }}</a>
+                                        <p class="m-0">{{ article.content }}...</p>
                                     </div>
                                 </div>
                             </div>

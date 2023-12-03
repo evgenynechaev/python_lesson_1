@@ -519,11 +519,24 @@ class IndexView(generic.TemplateView):
         return context
 
 
-class CategoryView(generic.TemplateView):
+class CategoryView(generic.ListView):
     template_name = 'main/category.html'
-    # model = models.Article
-    # form_class = forms.ArticleForm
-    # success_url = reverse_lazy('main:home')
+    model = models.Article
+    context_object_name = 'article_list'
+    query = None
+    filter = None
+    category = None
+
+    def _get_data(self, query):
+        return query.order_by('-pub_date').values(
+            'pk', 'title', 'content', 'banner', 'pub_date', 'category__pk', 'category__title')
+
+    def get_queryset(self):
+        # self.category = self.request.GET.get('id')
+        pk = self.kwargs.get('pk')
+        return self._get_data(models.Article.objects.filter(category=pk))
+        # return self.get_data(models.Article.objects.all()) if pk is None else \
+        #     self.get_data(models.Article.objects.filter(category=pk))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
