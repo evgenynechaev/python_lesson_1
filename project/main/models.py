@@ -107,6 +107,13 @@ class Article(BaseModel):
         unique=False,
         verbose_name='title (Заголовок)',
         help_text='Заголовок статьи')
+    annotation = models.TextField(
+        db_index=False,
+        null=False,
+        blank=False,
+        unique=False,
+        verbose_name='annotation (Аннотация)',
+        help_text='Аннотация статьи')
     content = models.TextField(
         db_index=False,
         null=False,
@@ -119,12 +126,11 @@ class Article(BaseModel):
         null=True,
         blank=True,
         verbose_name='banner (Баннер)')
-    pub_date = models.DateTimeField(
-        # auto_now_add=True,
-        null=True,
-        blank=True,
-        verbose_name='pub_date (Дата публикации)',
-        help_text='Дата публикации')
+    # pub_date = models.DateTimeField(
+    #     null=True,
+    #     blank=True,
+    #     verbose_name='pub_date (Дата публикации)',
+    #     help_text='Дата публикации')
     tags = models.ManyToManyField(to=Tag, blank=True)
 
     def __str__(self):
@@ -144,7 +150,7 @@ class Article(BaseModel):
         # return s
 
     class Meta:
-        ordering = ['title', 'pub_date']
+        ordering = ['title', 'created_at']
         verbose_name = 'Article (Статья)'
         verbose_name_plural = 'Articles (Статьи)'
 
@@ -165,7 +171,7 @@ class ArticleViews(models.Model):
 
 
 class Comments(BaseModel):
-    news = models.ForeignKey(Article, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
     created_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE)
@@ -176,9 +182,9 @@ class Comments(BaseModel):
         unique=False,
         verbose_name='message (Комментарий)',
         help_text='Комментарий к новости')
-    pub_date = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name='created_at (Дата создания)')
+    # pub_date = models.DateTimeField(
+    #     auto_now_add=True,
+    #     verbose_name='created_at (Дата создания)')
 
     def __str__(self):
         return self.message

@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-4 col-md-6 mb-5">
                 <!-- <h4 class="font-weight-bold mb-4">Категории</h4> -->
-                <h4 class="font-weight-bold mb-4">{{ category_title }}</h4>
+                <h4 class="font-weight-bold mb-4">Категории</h4>
                 <div class="d-flex flex-wrap m-n1">
                     {% for category in category_list %}
                         <a href="{% url 'main:category' pk=category.id %}" class="btn btn-sm btn-outline-secondary m-1">{{ category.title }}</a>

@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
-                        <h3 class="m-0">{{ category_title }}</h3>
+                        <h3 class="m-0">Категории</h3>
                         <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:categories' %}">Все</a> <!-- View All -->
                     </div>
                     {% for category in category_list|slice:":4" %}

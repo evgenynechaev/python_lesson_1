@@ -108,20 +108,29 @@ class CategoryForm(forms.ModelForm):
 
 
 class ArticleForm(BaseForm):
-    banner = forms.ImageField(label='Баннер', required=False)
+    banner = forms.ImageField(label='Баннер', required=True)
+
+    def get_file(self) -> bool:
+        uploaded_file = self.files.get('file')
+        return uploaded_file
 
     class Meta:
         model = models.Article
-        fields = 'category', 'title', 'content', 'banner',
+        fields = 'category', 'title', 'annotation', 'content', 'banner',
         widgets = {
             'category': forms.Select(attrs={
                 'class': 'form-control'}),
             'title': forms.TextInput(attrs={
                 'class': _input_class,
                 'placeholder': 'Заголовок статьи'}),
+            'annotation': forms.Textarea(attrs={
+                'cols': 80,
+                'rows': 5,
+                'class': _input_class,
+                'placeholder': 'Аннотация статьи'}),
             'content': forms.Textarea(attrs={
                 'cols': 80,
-                'rows': 10,
+                'rows': 15,
                 'class': _input_class,
                 'placeholder': 'Текст статьи'}),
             # 'banner': forms.ImageField(
@@ -130,6 +139,7 @@ class ArticleForm(BaseForm):
         labels = {
             'category': 'Категория',
             'title': 'Заголовок',
+            'annotation': 'Аннотация',
             'content': 'Статья',
             'banner': 'Баннер',
         }

@@ -29,10 +29,10 @@ admin.site.register(models.Tag, TagAdmin)
 
 
 class ArticlesAdmin(admin.ModelAdmin):
-    fields = ['category', ('title', 'content'), 'banner', 'author', 'pub_date', 'tags']
-    list_display = 'id', 'category', 'title', 'pub_date', 'created_by', 'created_at', '_tags'
+    fields = 'category', 'title', 'annotation', 'content', 'banner', 'tags'
+    list_display = 'id', 'category', 'title', 'created_by', 'created_at', '_tags'
     list_display_links = 'id', 'title',
-    search_fields = 'category', 'title', 'author', 'pub_date',
+    search_fields = 'category', 'title', 'created_at',
 
     def	_tags(self, row):
         return ', '.join(row.tags.all().values_list('title', flat='True'))
@@ -46,11 +46,19 @@ class ArticlesAdmin(admin.ModelAdmin):
 admin.site.register(models.Article, ArticlesAdmin)
 
 
+class ArticleViewsAdmin(admin.ModelAdmin):
+    list_display = 'article', 'count_views'
+    list_filter = 'article',
+
+
+admin.site.register(models.ArticleViews, ArticleViewsAdmin)
+
+
 class CommentsAdmin(admin.ModelAdmin):
-    fields = ['news', 'created_by', 'message', 'pub_date']
-    list_display = 'id', 'news', 'created_by', 'pub_date',
+    fields = 'article', 'message', 'created_by',
+    list_display = 'id', 'article', 'message', 'created_by',
     list_display_links = 'id',
-    search_fields = 'news', 'created_by', 'pub_date',
+    search_fields = 'article', 'created_by', 'created_at',
 
 
 admin.site.register(models.Comments, CommentsAdmin)

@@ -5,9 +5,10 @@ app_name = 'main'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
 
-    path('signup/', views.SignUpView.as_view(), name='signup'),
+    # path('signup/', views.SignUpView.as_view(), name='signup'),
 
-    path('categories/', views.categories, name='categories'),
+    # path('categories/', views.categories, name='categories'),
+    path('categories/', views.CategoriesView.as_view(), name='categories'),
 
     # path('category/<int:id>', views.category, name='category'),
     path('category/<int:pk>/', views.CategoryView.as_view(), name='category'),

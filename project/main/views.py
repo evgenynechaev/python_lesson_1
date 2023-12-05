@@ -519,6 +519,84 @@ class IndexView(generic.TemplateView):
         return context
 
 
+"""
+def categories(request):
+    # print(name)
+    context = {'title': 'Категории',
+               'navbar': navbar_active('category'),
+               'category_title': 'Категории',
+               'category_list': get_category_list(),
+               'categories_news_list': get_categories_news_list(),
+               }
+    return render(request, 'main/categories.html', context)
+"""
+
+
+class CategoriesView(generic.TemplateView):
+    template_name = 'main/categories.html'
+    # model = models.Article
+    # context_object_name = 'article_list'
+    # query = None
+    # filter = None
+    # category = None
+
+    """
+    def _get_data(self, query):
+        return query.order_by('-created_at').values(
+            'pk', 'title', 'content', 'banner', 'created_at', 'category__pk', 'category__title')
+    """
+
+    """
+    def get_queryset(self):
+        category_list = models.Category.objects.all()
+        # print(category_list)
+        articles_list = models.Article.objects.none()
+        for category in category_list:
+            category_article_list = models.Article.objects.filter(category=category).order_by('-created_at')[:4]
+            # print(category_article_list)
+            if category_article_list.exists():
+                articles_list |= category_article_list
+                print(category_article_list)
+            # print(category['id'])
+
+        print(articles_list.order_by('category__title', '-created_at'))
+        # self.category = self.request.GET.get('id')
+        # pk = self.kwargs.get('pk')
+        # return self._get_data(models.Article.objects.filter(category=pk))
+        # return self.get_data(models.Article.objects.all()) if pk is None else \
+        #     self.get_data(models.Article.objects.filter(category=pk))
+    """
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        category_article_list: list = []
+        for category in models.Category.objects.all().values('pk', 'title'):
+            article_list = models.Article.objects.filter(category=category.get('pk')).order_by('-created_at').values(
+                'pk', 'title', 'content', 'banner', 'created_at', 'category__pk', 'category__title')[:4]
+            if article_list.exists():
+                category_article_list.append({
+                    'category': category,
+                    'article_list': article_list,
+                })
+
+        # print('category_article_list')
+        # print(category_article_list)
+        # print(context)
+        # dt = forms.get_datetime_now()
+        # print(f'{dt=}')
+        # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
+        # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
+        context.update({
+            'title': 'Категории',
+            'navbar': navbar_active('category'),
+            'category_title': 'Категории',
+            'category_list': get_category_list_db(),
+            'tag_list': get_tag_list_db(),
+            'category_article_list': category_article_list,
+        })
+        return context
+
+
 class CategoryView(generic.ListView):
     template_name = 'main/category.html'
     model = models.Article
@@ -528,8 +606,8 @@ class CategoryView(generic.ListView):
     category = None
 
     def _get_data(self, query):
-        return query.order_by('-pub_date').values(
-            'pk', 'title', 'content', 'banner', 'pub_date', 'category__pk', 'category__title')
+        return query.order_by('-created_at').values(
+            'pk', 'title', 'annotation', 'content', 'banner', 'created_at', 'category__pk', 'category__title')
 
     def get_queryset(self):
         # self.category = self.request.GET.get('id')
@@ -540,6 +618,7 @@ class CategoryView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        category = models.Category.objects.get(pk=self.kwargs.get('pk'))
         # print(context)
         # dt = forms.get_datetime_now()
         # print(f'{dt=}')
@@ -548,11 +627,12 @@ class CategoryView(generic.ListView):
         context.update({
             'title': 'Категория',
             'navbar': navbar_active('category'),
-            'category_title': 'Категории',
+            # 'category_title': 'Категории',
+            'category': category,
             'category_list': get_category_list_db(),
-            'category_name': get_category_name_by_pk(context.get('pk')),
             'tag_list': get_tag_list_db(),
-            'news_list': get_news_list_pk(context.get('pk')),
+            # 'category_name': get_category_name_by_pk(context.get('pk')),
+            # 'news_list': get_news_list_pk(context.get('pk')),
         })
         return context
 
@@ -580,6 +660,17 @@ class ArticleDetailView(generic.DetailView):
     context_object_name = 'article'
 
     def get_context_data(self, **kwargs):
+        instance = self.get_object()
+        article_views, created = models.ArticleViews.objects.get_or_create(
+            article=instance,
+            defaults={'count_views': 1})
+
+        if not created:
+            article_views.count_views += 1
+        article_views.save()
+
+        # article_views = models.ArticleViews.objects.get(pk=self.kwargs.get('pk'))
+        # print(f'{article_views=}')
         context = super().get_context_data(**kwargs)
         context.update({
             'title': 'Новость',

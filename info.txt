@@ -13,6 +13,7 @@ python -m pip install --upgrade pip
 
 Install Django
 pip install django
+python -m pip install Django==4.2.7
 python -m pip install django
 # python -m pip install django-bootstrap4
 # python -m pip install crispy-bootstrap4
