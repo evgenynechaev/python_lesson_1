@@ -2,8 +2,8 @@ from zoneinfo import ZoneInfo
 from datetime import datetime
 
 from django import forms
-from django.forms import widgets
-from django.contrib.auth.forms import UserCreationForm
+from django.forms import widgets, TextInput, EmailInput, FileInput, Select
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
 from . import models
@@ -30,48 +30,58 @@ class BaseForm(forms.ModelForm):
         return datetime.now(zone)
 
 
-class UserRegisterForm(UserCreationForm):
-    # _input_class = 'form-control p-4'
-    password1 = forms.CharField(
-        label='Пароль',
-        widget=forms.PasswordInput(attrs={
-            'class': _input_class,
-            'placeholder': 'Введите пароль'}))
-    password2 = forms.CharField(
-        label='Повтор пароля',
-        widget=forms.PasswordInput(attrs={
-            'class': _input_class,
-            'placeholder': 'Повторите пароль'}))
-
-    # class Meta(UserCreationForm.Meta):
-    #     fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name')
-
-    """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields['username'].widget.attrs.update({"placeholder": 'Придумайте свой логин'})
-            # self.fields['email'].widget.attrs.update({"placeholder": 'Введите свой email'})
-            # self.fields['first_name'].widget.attrs.update({"placeholder": 'Ваше имя'})
-            # self.fields["last_name"].widget.attrs.update({"placeholder": 'Ваша фамилия'})
-            self.fields['password1'].widget.attrs.update({"placeholder": 'Придумайте свой пароль'})
-            self.fields['password2'].widget.attrs.update({"placeholder": 'Повторите придуманный пароль'})
-            self.fields[field].widget.attrs.update({"class": "form-control", "autocomplete": "off"})
-    """
-
+class UserUpdateForm(UserChangeForm):
     class Meta:
-        # _input_class = 'form-control p-4'
         model = User
-        fields = 'username', 'password1', 'password2'
-        widgets = {
-            'username': forms.TextInput(attrs={
-                'class': _input_class,
-                'placeholder': 'Логин пользователя'}),
-        }
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {'username': TextInput({'class': 'textinput form-control',
+                                          'placeholder': 'username'}),
+                   'email': EmailInput({'class': 'textinput form-control',
+                                        'placeholder': 'email'}),
+                   'first_name': TextInput({'class': 'textinput form-control',
+                                            'placeholder': 'First name'}),
+                   'last_name': TextInput({'class': 'textinput form-control',
+                                           'placeholder': 'Last name'}),
+                   }
         labels = {
-            'username': 'Пользователь',
+            # 'nickname': 'Кличка',
+            # 'birthday': 'Дата рождения',
+            # 'gender': 'Пол',
+            # 'avatar': 'Аватар',
         }
         help_texts = {
+        }
+        error_messages = {
+        }
+
+
+class AccountUpdateForm(forms.ModelForm):
+    birthday = forms.DateField(
+        widget=forms.SelectDateWidget(
+            # years=range(datetime.date.today().year - 15, 1920, -1),
+            attrs={'class': 'form-control'}
+        )
+    )
+
+    class Meta:
+        model = models.Account
+        fields = 'nickname', 'birthday', 'gender', 'avatar'
+        widgets = {
+            'nickname': TextInput({
+                'class': 'textinput form-control',
+                'placeholder': 'phone number'}),
+            'gender': forms.Select(attrs={
+                'class': 'form-control'}),
+        }
+        labels = {
+            'nickname': 'Кличка',
+            'birthday': 'Дата рождения',
+            'gender': 'Пол',
+            'avatar': 'Аватар',
+        }
+        help_texts = {
+        }
+        error_messages = {
         }
 
 

@@ -18,9 +18,6 @@ class SignUpView(generic.CreateView):
         context.update({
             'title': 'Регистрация',
             'navbar': navbar_active('signup'),
-            # 'category_title': 'Категории',
-            # 'category_list': get_category_list_db(),
-            # 'tag_list': get_tag_list_db(),
         })
         context.update(get_db_lists())
         return context

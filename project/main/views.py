@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.views import generic
 from django.urls import reverse_lazy
@@ -522,7 +522,6 @@ class IndexView(generic.TemplateView):
         context.update({
             'title': 'Главная страница',
             'navbar': navbar_active('home'),
-            # 'category_title': 'Категории',
             # 'category_list': get_category_list(),
             # 'category_list_db': get_category_list_db(),
             # 'user_list': get_user_list_db(),
@@ -746,7 +745,7 @@ class ArticleCreateView(generic.edit.CreateView):
         # context['work_create_dt_date'] = f'{dt.year:04}-{dt.month:02}-{dt.day:02}'
         # context['work_create_dt_time'] = f'{dt.hour:02}:{dt.minute:02}'
         context.update({
-            'title': 'Новая новость',
+            'title': 'Новая статья',
             'navbar': navbar_active('article'),
             # 'category_list': get_category_list_db(),
             # 'tag_list': get_tag_list_db(),
@@ -825,7 +824,7 @@ class FindView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'title': 'Новость',
+            'title': 'Поиск',
             'navbar': navbar_active('find'),
             # 'category_title': 'Категории',
             # 'category_list': get_category_list_db(),
@@ -870,7 +869,7 @@ class ProfileView(generic.edit.FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update({
-            'title': 'Профиль',
+            'title': 'Профиль пользователя',
             'navbar': navbar_active('profile'),
             # 'category_list': get_category_list_db(),
             # 'tag_list': get_tag_list_db(),
@@ -950,7 +949,7 @@ class UserView(generic.TemplateView):
             'category__pk', 'category__title', 'views__count')
         context = super().get_context_data(**kwargs)
         context.update({
-            'title': 'Профиль пользователя',
+            'title': 'Профиль автора',
             'navbar': navbar_active('user'),
             'user': user,
             'account': account,
@@ -958,3 +957,25 @@ class UserView(generic.TemplateView):
         })
         context.update(get_db_lists())
         return context
+
+"""
+def profile_update(request):
+    user = request.user
+    account = models.Account.objects.get(user=user)
+    context = {
+    }
+    if request.method == "POST":
+        user_form = forms.UserUpdateForm(request.POST, instance=user)
+        account_form = forms.AccountUpdateForm(request.POST, request.FILES, instance=account)
+        if user_form.is_valid() and account_form.is_valid():
+            user_form.save()
+            account_form.save()
+            # messages.success(request,"Профиль успешно обновлен")
+            return redirect('profile')
+    else:
+        context = {
+            'account_form': forms.AccountUpdateForm(instance=account),
+            'user_form': forms.UserUpdateForm(instance=user)
+        }
+    return render(request, 'users/edit_profile.html', context)
+"""
