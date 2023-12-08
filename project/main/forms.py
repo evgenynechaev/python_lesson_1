@@ -76,24 +76,34 @@ class UserRegisterForm(UserCreationForm):
 
 
 class ProfileForm(BaseForm):
+    avatar = forms.ImageField(label='Аватар', required=True)
+    birthday = forms.DateField(
+        widget=forms.SelectDateWidget(
+            # years=range(datetime.date.today().year - 15, 1920, -1),
+            attrs={'class': 'form-control'}
+        )
+    )
+
     class Meta:
         model = models.Account
         fields = 'nickname', 'birthday', 'gender', 'avatar',
         widgets = {
+            'nickname': forms.TextInput(attrs={
+                'class': _input_class,
+                'placeholder': 'Кличка'}),
+            # 'birthday': forms.DateField(),
+            'gender': forms.Select(attrs={
+                'class': 'form-control'}),
         }
         labels = {
-            'nickname': 'Работник',
+            'nickname': 'Кличка',
             'birthday': 'Дата рождения',
             'gender': 'Пол',
             'avatar': 'Аватар',
         }
         help_texts = {
-            'name': 'Фамилия И.О.',
         }
         error_messages = {
-            'name': {
-                'max_length': "Фамилия И.О. слишком длинное",
-            },
         }
 
 

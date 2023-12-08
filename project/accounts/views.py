@@ -1,19 +1,10 @@
-# import os
-# import sys
-# parent_dir_name = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-# sys.path.append(parent_dir_name + "/main")
-# import views
-# your_script.a_function()
 import sys
-sys.path.append("..")
-
 from django.shortcuts import render
-
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
 from . import forms
+from main.views import get_db_lists, navbar_active # , get_category_list_db, get_tag_list_db
 
 
 class SignUpView(generic.CreateView):
@@ -26,9 +17,10 @@ class SignUpView(generic.CreateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'title': 'Регистрация',
-            # 'navbar': main.views.navbar_active('signup'),
-            'category_title': 'Категории',
+            'navbar': navbar_active('signup'),
+            # 'category_title': 'Категории',
             # 'category_list': get_category_list_db(),
             # 'tag_list': get_tag_list_db(),
         })
+        context.update(get_db_lists())
         return context

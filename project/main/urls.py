@@ -18,17 +18,21 @@ urlpatterns = [
     path('article/<int:pk>/update/', views.ArticleUpdateView.as_view(), name='article_update'),
     path('article/<int:pk>/delete/', views.ArticleDeleteView.as_view(), name='article_delete'),
 
+    path('find', views.FindView.as_view(), name='find'),
+
     # path('news/<int:pk>', views.news, name='news'),
-    path('news/<int:pk>', views.ArticleView.as_view(), name='news'),
+    # path('news/<int:pk>', views.ArticleView.as_view(), name='news'),
 
     # path('about/', views.about, name='about'),
 
     # path('contacts/', views.contacts, name='contacts'),
     path('contacts/', views.ContactView.as_view(), name='contacts'),
 
+    path('user/<int:pk>', views.UserView.as_view(), name='user'),
+
     # path('profile/', views.profile, name='profile'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
-    path('profile_info/', views.ProfileInfoView.as_view(), name='profile_info'),
+    path('profile/articles/', views.ProfileArticlesView.as_view(), name='profile_articles'),
 
     path('formcats/', views.formcats, name='formcats'),
     path('show/', views.get_image, name='show'),

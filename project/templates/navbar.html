@@ -21,11 +21,25 @@
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle {{ navbar.user }}" data-toggle="dropdown">Авторы</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            {% for user in user_list %}
+                                <a href="{% url 'main:user' pk=user.id %}" class="dropdown-item">
+                                    {{ user.username }} {{ user.first_name }} {{ user.last_name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.article }}">Статья</a>
+                    <a href="{% url 'main:find' %}" class="nav-item nav-link {{ navbar.find }}">Поиск</a>
                     {% comment %}
-                    <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.news }}">Новость</a>
+                    <!-- <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.news }}">Новость</a> -->
                     {% endcomment %}
                     <!--
+                    {% comment %}
                     <a href="{% url 'main:news' pk=1 %}" class="nav-item nav-link {{ navbar.news }}">Новость</a>
+                    {% endcomment %}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
                         <div class="dropdown-menu rounded-0 m-0">
@@ -48,31 +62,35 @@
                     {% endif %}
 
                 </div>
-                <div class="input-group ml-auto" style="width: 100%; max-width: 400px;">
-                    <input type="text" class="form-control" placeholder="Поиск"> <!-- Keyword -->
-                    <div class="input-group-append">
-                        <button class="input-group-text text-secondary"><i
-                                class="fa fa-search"></i></button>
+                <form action="{% url 'main:find' %}" method="get">
+                    <div class="input-group ml-auto" style="width: 100%; max-width: 400px;">
+                        <input type="text" name="filter" class="form-control" placeholder="Поиск"> <!-- Keyword -->
+                        <div class="input-group-append">
+                            <button class="input-group-text text-secondary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'main:profile' %}" class="input-group-text text-secondary" data-toggle="tooltip"
+                                   title="Логин: {{ user.username }}">
+                                {% if user.get_full_name|length > 0 %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'logout' %}" class="text-secondary">
+                                <i class="bi bi-box-arrow-right input-group-text" data-toggle="tooltip"
+                                   title="Выход" style="font-size: 24px;">
+                                </i>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="input-group-text text-secondary">
+                                Вход
+                            </a>
+                        {% endif %}
                     </div>
-                    {% if user.is_authenticated %}
-                        <a href="{% url 'main:profile' %}" class="input-group-text text-secondary">
-                            {% if user.get_full_name|length > 0 %}
-                                {{ user.get_full_name }}
-                            {% else %}
-                                {{ user.username }}
-                            {% endif %}
-                        </a>
-                        <a href="{% url 'logout' %}" class="text-secondary">
-                            <i class="bi bi-box-arrow-right input-group-text" data-toggle="tooltip"
-                               title="Выход" style="font-size: 24px;">
-                            </i>
-                        </a>
-                    {% else %}
-                        <a href="{% url 'login' %}" class="input-group-text text-secondary">
-                            Вход
-                        </a>
-                    {% endif %}
-                </div>
+                </form>
             </div>
         </nav>
     </div>

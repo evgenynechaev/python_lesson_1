@@ -22,9 +22,9 @@
             <div class="bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Профиль пользователя</h3>
             </div>
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                {% csrf_token %}
-                {{ form.as_div }}
+                {{ form.as_p }}
                 <button type="submit">Применить</button>
             </form>
 
@@ -95,14 +95,17 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="control-group">
+                                <div class="btn-group">
                                     <!--
                                     <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="change">Изменить</button>
                                     <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="posts">Мои статьи</button>
                                     -->
-                                    <a href="{% url 'admin:index' %}" class="btn btn-primary px-4" id="change">Изменить</a>
-                                    <a href="" class="btn btn-primary px-4" id="posts">Мои статьи</a>
-                                    <a href="{% url 'main:article_create' %}" class="btn btn-primary px-4" id="new_posts">Новая новость</a>
+                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                       href="{% url 'admin:index' %}" id="change">Изменить</a>
+                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                       href="{% url 'main:profile_articles' %}" id="profle_articles">Мои статьи</a>
+                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                       href="{% url 'main:article_create' %}"  id="new_posts">Новая статья</a>
                                 </div>
                             </div>
                         </form>

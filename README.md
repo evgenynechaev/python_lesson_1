@@ -4,7 +4,9 @@
 <p>
 Для проверки:<br>
 login: evgen<br>
-password: 123
+password: 123<br><br>
+login: test3<br>
+password: reltcybr
 </p>
 <h3>Особенности проекта.</h3>
 <p>

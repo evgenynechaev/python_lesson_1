@@ -94,11 +94,22 @@ class Tag(models.Model):
         verbose_name_plural = 'Tags (Тэги)'
 
 
+class Views(models.Model):
+    count = models.PositiveIntegerField(
+        default=0,
+        verbose_name='count (Количество просмотров)',
+        help_text='Количество просмотров новости')
+
+    def __str__(self):
+        return self.count
+
+    class Meta:
+        verbose_name = 'Views (Количество просмотров)'
+        verbose_name_plural = 'Views (Количество просмотров)'
+
+
 class Article(BaseModel):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    # author = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE)
     title = models.CharField(
         max_length=200,
         db_index=False,
@@ -132,6 +143,7 @@ class Article(BaseModel):
     #     verbose_name='pub_date (Дата публикации)',
     #     help_text='Дата публикации')
     tags = models.ManyToManyField(to=Tag, blank=True)
+    views = models.OneToOneField(Views, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -153,21 +165,6 @@ class Article(BaseModel):
         ordering = ['title', 'created_at']
         verbose_name = 'Article (Статья)'
         verbose_name_plural = 'Articles (Статьи)'
-
-
-class ArticleViews(models.Model):
-    article = models.OneToOneField(
-        Article,
-        on_delete=models.CASCADE,
-        primary_key=True)
-    count_views = models.PositiveIntegerField(
-        default=0,
-        verbose_name='count_views (Количество просмотров)',
-        help_text='Количество просмотров новости')
-
-    class Meta:
-        verbose_name = 'ArticleViews (Количество просмотров)'
-        verbose_name_plural = 'ArticleViews (Количество просмотров)'
 
 
 class Comments(BaseModel):

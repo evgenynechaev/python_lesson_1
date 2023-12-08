@@ -4,22 +4,22 @@
     <div class="container-fluid">
         <div class="container">
             <div class="row">
-                {% for category_name,category_news_list in category_news_dict.items %}
+                {% for item in category_article_list %}
                 <div class="col-lg-6 py-3">
                     <div class="bg-light py-2 px-4 mb-3">
-                        <h3 class="m-0">{{ category_name }}</h3>
+                        <h3 class="m-0">{{ item.category.title }}</h3>
                     </div>
                     <div class="owl-carousel owl-carousel-3 carousel-item-2 position-relative">
-                        {% for news in category_news_list %}
+                        {% for article in item.article_list %}
                         <div class="position-relative">
-                            <img class="img-fluid w-100" src="{% static ''|add:news.banner %}" style="object-fit: cover;">
+                            <img class="img-fluid w-100" src="{% static ''|add:article.banner %}" style="object-fit: cover;">
                             <div class="overlay position-relative bg-light">
                                 <div class="mb-2" style="font-size: 13px;">
-                                    <a href="{% url 'main:category' pk=news.category_pk %}">{{ news.category_name }}</a>
-                                    <span class="px-1">/</span>
-                                    <span>{{ news.pub_date }}</span>
+                                    <a href="{% url 'main:category' pk=article.category__pk %}">{{ article.category__title }}</a>
+                                    <span class="px-0">/</span>
+                                    <span>{{ article.created_at|date:'SHORT_DATE_FORMAT' }}</span>
                                 </div>
-                                <a class="h4 m-0" href="{% url 'main:news' pk=news.id%}">{{ news.headline }}</a>
+                                <a class="h4 m-0" href="{% url 'main:article_detail' pk=article.pk %}">{{ article.title }}</a>
                             </div>
                         </div>
                         {% endfor %}
