@@ -110,6 +110,7 @@ class ProfileUpdateMultiForm(MultiModelForm):
     }
 
 
+"""
 class ProfileUpdateForm(forms.Form):
     first_name = forms.CharField(
         max_length=100,
@@ -150,9 +151,9 @@ class ProfileUpdateForm(forms.Form):
             'gender': 'Пол',
             'avatar': 'Аватар',
         }
+"""
 
-
-
+"""
 class ProfileForm(BaseForm):
     avatar = forms.ImageField(label='Аватар', required=True)
     birthday = forms.DateField(
@@ -183,6 +184,7 @@ class ProfileForm(BaseForm):
         }
         error_messages = {
         }
+"""
 
 
 class CategoryForm(forms.ModelForm):
