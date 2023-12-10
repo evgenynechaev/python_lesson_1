@@ -25,64 +25,11 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="contact-form bg-light mb-3" style="padding: 30px;">
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="control-group">
-                                    <label for="name" class="form-label">Login</label>
-                                    <input type="text" class="form-control p-4" id="name" value="{{user.username}}" required="required" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="control-group">
-                                    <label for="first_name" class="form-label">Nickname</label>
-                                    <input type="text" class="form-control p-4" id="nickname" value="{{account.nickname}}" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-6">
-                                <div class="control-group">
-                                    <label for="first_name" class="form-label">Имя</label>
-                                    <input type="text" class="form-control p-4" id="first_name" value="{{user.first_name}}" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="control-group">
-                                    <label for="last_name" class="form-label">Фамилия</label>
-                                    <input type="text" class="form-control p-4" id="last_name" value="{{user.last_name}}" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="col-md-4">
-                                <div class="control-group">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control p-4" id="email" value="{{user.email}}" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="control-group">
-                                    <label for="last_name" class="form-label">День рождения</label>
-                                    <input type="text" class="form-control p-4" id="birthday" value="{{account.birthday}}" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="control-group">
-                                    <label for="first_name" class="form-label">Пол</label>
-                                    <input type="text" class="form-control p-4" id="gender" value="{{account.get_gender_display}}" readonly/>
-                                    <p class="help-block text-danger"></p>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'main/part_profile.html' %}
                     </div>
                 </div>
             </div>
+
             <div class="bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Статьи автора</h3>
             </div>

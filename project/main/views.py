@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.views import generic
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.contrib.auth.models import User
@@ -675,12 +675,48 @@ class ArticleView(generic.TemplateView):
 """
 
 
-class ArticleDetailView(generic.DetailView):
-    model = models.Article
+class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
     template_name = 'main/article_detail.html'
+    model = models.Article
     context_object_name = 'article'
+    form_class = forms.CommentForm
+    # success_url = reverse_lazy('main:article_detail' kwargs={'pk': self.object.id})
+
+    def get_success_url(self):
+        return reverse_lazy('main:article_detail', kwargs={'pk': self.get_object().pk})
+        # return reverse('main:article_detail', kwargs={'pk': self.object.id})
+
+    def post(self, request, **kwargs):
+        print('post')
+        user = request.user
+        print(user)
+        article = self.get_object()
+        print(article)
+        print(request.POST)
+        message = request.POST.get('message')
+        print(message)
+        if len(message) > 0:
+            models.Comment.objects.create(
+                article=article,
+                message=message,
+                created_by=request.user)
+        form = self.get_form()
+        # return self.form_valid(form)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    # def form_valid(self, form):
+        print('form_valid')
+        # instance = self.get_object()
+        # form.instance.article = instance
+        # form.instance.created_by = self.request.user
+        # form.save()
+    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        print('get_context_data')
         instance = self.get_object()
         instance.views.count += 1
         instance.views.save()
@@ -696,6 +732,12 @@ class ArticleDetailView(generic.DetailView):
         article_views.save()
         """
 
+        comment_list = models.Comment.objects.filter(article=instance).order_by('-created_at')\
+            # .values(
+            # 'pk', 'title', 'annotation', 'banner',
+            # 'created_by', 'created_by__username', 'created_by__first_name', 'created_by__last_name', 'created_at',
+            # 'category__pk', 'category__title', 'views__count')
+
         # from django.db.models import F
         # from myapp.models import Product
         # Product.objects.update(price=F('price') * 1.1)
@@ -709,9 +751,10 @@ class ArticleDetailView(generic.DetailView):
             # 'category_list': get_category_list_db(),
             # 'tag_list': get_tag_list_db(),
             # 'article_count_views': article_views.count_views,
+            # 'article': instance,
             'article_count_views': instance.views.count,
             # 'news': get_news(context.get('pk')),
-            # 'comment_list': get_comments_list(context.get('pk')),
+            'comment_list': comment_list,
         })
         context.update(get_db_lists())
         return context
@@ -853,26 +896,45 @@ class ContactView(generic.TemplateView):
 
 
 # class ProfileView(generic.edit.UpdateView):
-class ProfileView(generic.edit.FormView):
+class ProfileView(generic.TemplateView):
     template_name = 'main/profile.html'
-    model = models.Account
-    form_class = forms.ProfileForm
-    success_url = reverse_lazy('main:home')
+    # model = models.Account
+    # form_class = forms.ProfileForm
+    # success_url = reverse_lazy('main:home')
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        print('form_valid')
-        print(form.instance)
-        # form.fill(self.request.user)
-        return super().form_valid(form)
+    # def form_valid(self, form):
+    #     form.instance.user = self.request.user
+    #     print('form_valid')
+    #     print(form.instance)
+    #     # form.fill(self.request.user)
+    #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        pk = self.request.user.pk
+        account = None
+        user_object = User.objects.filter(pk=pk)
+        if not user_object.exists():
+            raise Http404
+        user = user_object.get()
+        # print(f'{user=}')
+        account_object = models.Account.objects.filter(pk=pk)
+        if account_object.exists():
+            account = account_object.get()
+            # print(acc.get_gender_display())
+            # account = account_object.values('nickname', 'birthday', 'gender', 'avatar').first()
+            # print(f'{account=}')
+        # article_list = models.Article.objects.filter(created_by=pk).order_by('-created_at').values(
+        #     'pk', 'title', 'annotation', 'banner',
+        #     'created_by', 'created_by__username', 'created_by__first_name', 'created_by__last_name', 'created_at',
+        #     'category__pk', 'category__title', 'views__count')
         context = super().get_context_data(**kwargs)
         context.update({
             'title': 'Профиль пользователя',
             'navbar': navbar_active('profile'),
-            # 'category_list': get_category_list_db(),
-            # 'tag_list': get_tag_list_db(),
+            'user': user,
+            'account': account,
+            # 'article_list': article_list,
         })
         context.update(get_db_lists())
         return context
@@ -883,15 +945,15 @@ class ProfileArticlesView(generic.ListView):
     model = models.Article
     context_object_name = 'article_list'
 
-    def add_to_query(self, value):
-        return None if value in ('', None) else Q(title__icontains=value)
+    # def add_to_query(self, value):
+    #     return None if value in ('', None) else Q(title__icontains=value)
 
-    def _get_objects(self, query):
-        return models.Article.objects.all() if query is None else models.Article.objects.filter(query)
+    # def _get_objects(self, query):
+    #     return models.Article.objects.all() if query is None else models.Article.objects.filter(query)
 
     def get_queryset(self):
         user = self.request.user
-        print(user)
+        # print(user)
         return models.Article.objects.filter(created_by=user).order_by('-created_at').values(
             'pk', 'title', 'annotation', 'content', 'banner', 'created_at',
             'category__pk', 'category__title', 'views__count')
@@ -958,24 +1020,80 @@ class UserView(generic.TemplateView):
         context.update(get_db_lists())
         return context
 
-"""
-def profile_update(request):
-    user = request.user
-    account = models.Account.objects.get(user=user)
-    context = {
-    }
-    if request.method == "POST":
-        user_form = forms.UserUpdateForm(request.POST, instance=user)
-        account_form = forms.AccountUpdateForm(request.POST, request.FILES, instance=account)
-        if user_form.is_valid() and account_form.is_valid():
-            user_form.save()
-            account_form.save()
-            # messages.success(request,"Профиль успешно обновлен")
-            return redirect('profile')
-    else:
-        context = {
-            'account_form': forms.AccountUpdateForm(instance=account),
-            'user_form': forms.UserUpdateForm(instance=user)
-        }
-    return render(request, 'users/edit_profile.html', context)
-"""
+
+class ProfileUpdateView(generic.FormView):
+    template_name = 'main/profile_update.html'
+    form_class = forms.ProfileUpdateForm
+    success_url = reverse_lazy('main:home')
+
+    def form_valid(self, form, **kwargs):
+        print('form.valid')
+        form.update(self.request.user)
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        pk = self.request.user.pk
+        account = None
+        user_object = User.objects.filter(pk=pk)
+        if not user_object.exists():
+            raise Http404
+        user = user_object.get()
+        # print(f'{user=}')
+        account_object = models.Account.objects.filter(pk=pk)
+        if account_object.exists():
+            account = account_object.get()
+            # print(acc.get_gender_display())
+            # account = account_object.values('nickname', 'birthday', 'gender', 'avatar').first()
+            # print(f'{account=}')
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Профиль пользователя',
+            'navbar': navbar_active('user'),
+            'user': user,
+            'account': account,
+        })
+        context.update(get_db_lists())
+        return context
+
+
+class ProfileUpdateMultiView(generic.FormView):
+    template_name = 'main/profile_update.html'
+    form_class = forms.ProfileUpdateMultiForm
+    success_url = reverse_lazy('main:profile')
+
+    def get_form_kwargs(self):
+        # print('get_form_kwargs')
+        kwargs = super(ProfileUpdateMultiView, self).get_form_kwargs()
+        kwargs.update(instance={
+            'user': self.request.user,
+            'account': models.Account.objects.filter(pk=self.request.user.pk).get(),
+        })
+        return kwargs
+
+    def form_valid(self, form, **kwargs):
+        # print('form_valid')
+        # form.update(self.request.user)
+        form.save()
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        pk = self.request.user.pk
+        account = None
+        user_object = User.objects.filter(pk=pk)
+        if not user_object.exists():
+            raise Http404
+        user = user_object.get()
+        # print(f'{user=}')
+        account_object = models.Account.objects.filter(pk=pk)
+        if account_object.exists():
+            account = account_object.get()
+            # print(acc.get_gender_display())
+            # account = account_object.values('nickname', 'birthday', 'gender', 'avatar').first()
+            # print(f'{account=}')
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Профиль пользователя',
+            'navbar': navbar_active('profile'),
+        })
+        context.update(get_db_lists())
+        return context

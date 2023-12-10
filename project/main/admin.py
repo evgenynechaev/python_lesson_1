@@ -64,11 +64,11 @@ admin.site.register(models.Views, ViewsAdmin)
 # admin.site.register(models.ArticleViews, ArticleViewsAdmin)
 
 
-class CommentsAdmin(admin.ModelAdmin):
+class CommentAdmin(admin.ModelAdmin):
     fields = 'article', 'message', 'created_by',
     list_display = 'id', 'article', 'message', 'created_by',
     list_display_links = 'id',
     search_fields = 'article', 'created_by', 'created_at',
 
 
-admin.site.register(models.Comments, CommentsAdmin)
+admin.site.register(models.Comment, CommentAdmin)

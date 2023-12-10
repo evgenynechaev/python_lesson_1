@@ -30,8 +30,9 @@ urlpatterns = [
 
     path('user/<int:pk>', views.UserView.as_view(), name='user'),
 
-    # path('profile/', views.profile, name='profile'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
+    # path('profile/update/', views.ProfileUpdateView.as_view(), name='profile_update'),
+    path('profile/update/', views.ProfileUpdateMultiView.as_view(), name='profile_update'),
     path('profile/articles/', views.ProfileArticlesView.as_view(), name='profile_articles'),
 
     path('formcats/', views.formcats, name='formcats'),

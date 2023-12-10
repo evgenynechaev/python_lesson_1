@@ -19,13 +19,58 @@
     <!-- News With Sidebar Start -->
     <div class="container-fluid py-3">
         <div class="container">
+            <!--
+            <div class="bg-light py-2 px-4 mb-3">
+                <h3 class="m-0">Профиль пользователя</h3>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="contact-form bg-light mb-3" style="padding: 30px;">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="name" class="form-label">Login</label>
+                                    <input type="text" class="form-control p-4" id="name" value="{{user.username}}" required="required" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="first_name" class="form-label">Nickname</label>
+                                    <input type="text" class="form-control p-4" id="nickname" value="{{account.nickname}}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="first_name" class="form-label">Имя</label>
+                                    <input type="text" class="form-control p-4" id="first_name" value="{{user.first_name}}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="last_name" class="form-label">Фамилия</label>
+                                    <input type="text" class="form-control p-4" id="last_name" value="{{user.last_name}}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
-                                <h3 class="m-0">{{ category.title }}</h3>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:categories' %}">Все</a>
+                                <h3 class="m-0">Мои статьи</h3>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:profile' %}">Профиль</a>
                             </div>
                         </div>
                         {% if article_list.count > 0 %}

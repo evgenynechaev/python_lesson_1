@@ -167,11 +167,11 @@ class Article(BaseModel):
         verbose_name_plural = 'Articles (Статьи)'
 
 
-class Comments(BaseModel):
+class Comment(BaseModel):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    created_by = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE)
+    # created_by = models.ForeignKey(
+    #     User,
+    #     on_delete=models.CASCADE)
     message = models.TextField(
         db_index=False,
         null=False,
@@ -187,8 +187,8 @@ class Comments(BaseModel):
         return self.message
 
     class Meta:
-        verbose_name = 'Comments (Комментарии)'
-        verbose_name_plural = 'Comments (Комментарии)'
+        verbose_name = 'Comment (Комментарий)'
+        verbose_name_plural = 'Comment (Комментарий)'
 
 
 class PublishedToday(models.Manager):
