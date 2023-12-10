@@ -1090,6 +1090,9 @@ class ProfileUpdateMultiView(generic.FormView):
             # print(acc.get_gender_display())
             # account = account_object.values('nickname', 'birthday', 'gender', 'avatar').first()
             # print(f'{account=}')
+        else:
+            account_object = models.Account.objects.create(user=user)
+            account = account_object
         context = super().get_context_data(**kwargs)
         context.update({
             'title': 'Профиль пользователя',

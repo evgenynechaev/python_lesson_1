@@ -44,20 +44,20 @@ class UserUpdateForm(UserChangeForm):
             }),
             'email': EmailInput({
                 'class': 'textinput form-control p-4',
-                'placeholder': 'email'
+                'placeholder': 'e-mail'
             }),
             'first_name': TextInput({
                 'class': 'textinput form-control p-4',
-                'placeholder': 'First name'
+                'placeholder': 'Имя'
             }),
             'last_name': TextInput({
                 'class': 'textinput form-control p-4',
-                'placeholder': 'Last name'
+                'placeholder': 'Фамилия'
             }),
         }
         labels = {
             'username': 'Имя пользователя',
-            'email': 'EMail',
+            'email': 'E-Mail',
             'first_name': 'Имя',
             'last_name': 'Фамилия',
         }
@@ -69,7 +69,7 @@ class UserUpdateForm(UserChangeForm):
 
 class AccountUpdateForm(forms.ModelForm):
     birthday = forms.DateField(
-        label='Дата рождения',
+        label='Дата рождения (ДД.ММ.ГГГГ)',
         input_formats=('%d.%m.%Y',),
         widget=forms.DateInput(
             format='%d.%m.%Y',
@@ -207,7 +207,7 @@ class ArticleForm(BaseForm):
         fields = 'category', 'title', 'annotation', 'content', 'banner',
         widgets = {
             'category': forms.Select(attrs={
-                'class': 'form-control'}),
+                'class': 'form-control col-md-4'}),
             'title': forms.TextInput(attrs={
                 'class': _input_class,
                 'placeholder': 'Заголовок статьи'}),
