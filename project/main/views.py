@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.views import generic
+# from django.views.generic.dates import YearArchiveView
 from django.urls import reverse, reverse_lazy
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
@@ -14,9 +15,10 @@ def navbar_active(page: str):
     navbar: dict = {
         'home': '',
         'category': '',
-        'article': '',
         'user': '',
+        'article': '',
         'find': '',
+        'archive': '',
         'contacts': '',
         'profile': '',
         'signup': '',
@@ -1099,6 +1101,95 @@ class ProfileUpdateMultiView(generic.FormView):
         context.update({
             'title': 'Профиль пользователя',
             'navbar': navbar_active('profile'),
+        })
+        context.update(get_db_lists())
+        return context
+
+
+"""
+class ArchiveView(generic.ListView):
+    template_name = 'main/archive.html'
+    model = models.Article
+    context_object_name = 'article_list'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Архив статей',
+            'navbar': navbar_active('archive'),
+        })
+        context.update(get_db_lists())
+        return context
+"""
+
+
+class ArchiveArticleView(generic.dates.ArchiveIndexView):
+    template_name = 'main/archive_article.html'
+    model = models.Article
+    context_object_name = 'article_list'
+    date_field = 'created_at'
+    allow_future = False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Архив статей',
+            'navbar': navbar_active('archive'),
+        })
+        context.update(get_db_lists())
+        return context
+
+
+class ArchiveArticleYearView(generic.dates.YearArchiveView):
+    template_name = 'main/archive_article_year.html'
+    queryset = models.Article.objects.all()
+    context_object_name = 'article_list'
+    date_field = 'created_at'
+    make_object_list = True
+    allow_future = False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Архив статей',
+            'navbar': navbar_active('archive'),
+        })
+        context.update(get_db_lists())
+        return context
+
+
+class ArchiveArticleMonthView(generic.dates.MonthArchiveView):
+    template_name = 'main/archive_article_month.html'
+    queryset = models.Article.objects.all()
+    context_object_name = 'article_list'
+    month_format = '%m'
+    date_field = 'created_at'
+    allow_future = False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Архив статей',
+            'navbar': navbar_active('archive'),
+        })
+        context.update(get_db_lists())
+        return context
+
+
+class ArchiveArticleDayView(generic.dates.DayArchiveView):
+    template_name = 'main/archive_article_day.html'
+    queryset = models.Article.objects.all()
+    context_object_name = 'article_list'
+    month_format = '%m'
+    day_format = '%d'
+    date_field = 'created_at'
+    allow_future = False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Архив статей',
+            'navbar': navbar_active('archive'),
         })
         context.update(get_db_lists())
         return context

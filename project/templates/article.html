@@ -96,11 +96,11 @@
                         <div class="media mb-4">
                             <img src="{% static 'img/user.jpg' %}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
                             <div class="media-body">
-                                <h6><a href="">{{ comment.created_by }}</a> <small><i>{{ comment.created_at }}</i></small></h6>
+                                <h6><a href="{% url 'main:user' pk=comment.created_by.pk %}">{{ comment.created_by }}</a> <small><i>{{ comment.created_at }}</i></small></h6>
                                 <p>{{ comment.message }}</p>
-                                <!--
-                                <button class="btn btn-sm btn-outline-secondary">Reply</button>
-                                -->
+                                {% if comment.created_by == user %}
+                                    <button class="btn btn-sm btn-outline-secondary">Удалить</button>
+                                {% endif %}
                             </div>
                         </div>
                         {% endfor %}
