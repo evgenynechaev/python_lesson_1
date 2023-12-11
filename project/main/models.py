@@ -137,19 +137,18 @@ class Article(BaseModel):
         null=True,
         blank=True,
         verbose_name='banner (Баннер)')
-    # pub_date = models.DateTimeField(
-    #     null=True,
-    #     blank=True,
-    #     verbose_name='pub_date (Дата публикации)',
-    #     help_text='Дата публикации')
-    tags = models.ManyToManyField(to=Tag, blank=True)
-    views = models.OneToOneField(Views, on_delete=models.CASCADE)
+    tags = models.ManyToManyField(
+        to=Tag,
+        blank=True)
+    views = models.OneToOneField(
+        Views,
+        on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse_lazy('main:article_detail', kwargs={'pk': self.id})
+        return reverse_lazy('main:article_detail', kwargs={'pk': self.pk})
 
     def tag_list(self):
         tags = ' '.join(self.tags.all())
@@ -169,9 +168,6 @@ class Article(BaseModel):
 
 class Comment(BaseModel):
     article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    # created_by = models.ForeignKey(
-    #     User,
-    #     on_delete=models.CASCADE)
     message = models.TextField(
         db_index=False,
         null=False,
@@ -179,9 +175,6 @@ class Comment(BaseModel):
         unique=False,
         verbose_name='message (Комментарий)',
         help_text='Комментарий к новости')
-    # pub_date = models.DateTimeField(
-    #     auto_now_add=True,
-    #     verbose_name='created_at (Дата создания)')
 
     def __str__(self):
         return self.message

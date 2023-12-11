@@ -1021,6 +1021,7 @@ class UserView(generic.TemplateView):
         return context
 
 
+"""
 class ProfileUpdateView(generic.FormView):
     template_name = 'main/profile_update.html'
     form_class = forms.ProfileUpdateForm
@@ -1054,6 +1055,7 @@ class ProfileUpdateView(generic.FormView):
         })
         context.update(get_db_lists())
         return context
+"""
 
 
 class ProfileUpdateMultiView(generic.FormView):
