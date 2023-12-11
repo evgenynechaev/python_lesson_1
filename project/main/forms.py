@@ -206,7 +206,7 @@ class ArticleForm(BaseForm):
 
     class Meta:
         model = models.Article
-        fields = 'category', 'title', 'annotation', 'content', 'banner',
+        fields = 'category', 'title', 'annotation', 'content', 'banner', 'tags',
         widgets = {
             'category': forms.Select(attrs={
                 'class': 'form-control col-md-4'}),
@@ -225,6 +225,10 @@ class ArticleForm(BaseForm):
                 'placeholder': 'Текст статьи'}),
             # 'banner': forms.ImageField(
             #     label='Banner')
+            'tags': forms.CheckboxSelectMultiple(attrs={
+                'rows': 5,
+                'class': 'btn-check',
+                'placeholder': 'Тэги'}),
         }
         labels = {
             'category': 'Категория',
@@ -232,6 +236,7 @@ class ArticleForm(BaseForm):
             'annotation': 'Аннотация',
             'content': 'Статья',
             'banner': 'Баннер',
+            'tags': 'Тэги',
         }
         help_texts = {
         }

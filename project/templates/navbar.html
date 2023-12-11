@@ -33,6 +33,7 @@
                     </div>
                     <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.article }}">Статья</a>
                     <a href="{% url 'main:find' %}" class="nav-item nav-link {{ navbar.find }}">Поиск</a>
+                    <a href="{% url 'main:tags' %}" class="nav-item nav-link {{ navbar.tags }}">Тэги</a>
                     <a href="{% url 'main:archive' %}" class="nav-item nav-link {{ navbar.archive }}">Архив</a>
                     {% comment %}
                     <!-- <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.news }}">Новость</a> -->

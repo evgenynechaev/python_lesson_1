@@ -28,11 +28,13 @@ class TagAdmin(admin.ModelAdmin):
 admin.site.register(models.Tag, TagAdmin)
 
 
-class ArticlesAdmin(admin.ModelAdmin):
+class ArticleAdmin(admin.ModelAdmin):
     fields = 'category', 'title', 'annotation', 'content', 'banner', 'tags', 'views',
-    list_display = 'id', 'category', 'title', 'created_by', 'created_at', 'views', '_tags',
+    list_display = 'id', 'category', 'title', 'created_by', 'created_at', 'views', '_tags', 'banner_tag'
     list_display_links = 'id', 'title',
     search_fields = 'category', 'title', 'created_at',
+    ordering = '-created_at', 'title', 'created_by',
+    filter_horizontal = 'tags',
 
     def	_tags(self, row):
         return ', '.join(row.tags.all().values_list('title', flat='True'))
@@ -45,7 +47,7 @@ class ArticlesAdmin(admin.ModelAdmin):
         obj.save()
 
 
-admin.site.register(models.Article, ArticlesAdmin)
+admin.site.register(models.Article, ArticleAdmin)
 
 
 class ViewsAdmin(admin.ModelAdmin):

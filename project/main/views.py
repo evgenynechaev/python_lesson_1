@@ -18,6 +18,7 @@ def navbar_active(page: str):
         'user': '',
         'article': '',
         'find': '',
+        'tags': '',
         'archive': '',
         'contacts': '',
         'profile': '',
@@ -876,6 +877,35 @@ class FindView(generic.ListView):
             # 'tag_list': get_tag_list_db(),
             # 'news': get_news(context.get('pk')),
             # 'comment_list': get_comments_list(context.get('pk')),
+        })
+        context.update(get_db_lists())
+        return context
+
+
+class TagsView(generic.ListView):
+    template_name = 'main/tags.html'
+    model = models.Article
+    context_object_name = 'article_list'
+
+    def add_to_query(self, value):
+        return None if value in ('', None) else Q(title__icontains=value)
+
+    def _get_objects(self, query):
+        return models.Article.objects.all() if query is None else models.Article.objects.filter(query)
+
+    def get_queryset(self):
+        filter_value = self.request.GET.get('filter')
+        # print(f'{filter_value=}')
+        query = self.add_to_query(filter_value)
+        return self._get_objects(query).order_by('-created_at').values(
+            'pk', 'title', 'annotation', 'content', 'banner', 'created_at',
+            'category__pk', 'category__title', 'views__count')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Тэги',
+            'navbar': navbar_active('tags'),
         })
         context.update(get_db_lists())
         return context
