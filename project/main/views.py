@@ -24,8 +24,12 @@ def navbar_active(page: str):
         'profile': '',
         'signup': '',
     }
-    navbar.update({'article': 'disabled'})
-    navbar.update({'find': 'disabled'})
+    navbar.update({'article': 'd-none'})
+    navbar.update({'find': 'd-none'})
+    navbar.update({'tags': 'd-none'})
+    navbar.update({'archive': 'd-none'})
+    navbar.update({'contacts': 'd-none'})
+    navbar.update({'profile': 'd-none'})
     navbar.update({page: 'active'})
     return navbar
 
