@@ -8,7 +8,7 @@
             <nav class="breadcrumb bg-transparent m-0 p-0">
                 <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
                 <a class="breadcrumb-item" href="{% url 'main:archive' %}">Архив</a>
-                <span class="breadcrumb-item active">{{ day|date:'Y F d' }}</span>
+                <span class="breadcrumb-item active">{{ day|date:'Y F j l' }}</span>
             </nav>
         </div>
     </div>
@@ -31,7 +31,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
-                                <h3 class="m-0">{{ day|date:'Y F d' }}</h3>
+                                <h3 class="m-0">{{ day|date:'Y F j l' }}</h3>
                                 <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:archive' %}">Все</a>
                             </div>
                         </div>

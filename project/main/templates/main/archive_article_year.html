@@ -35,7 +35,7 @@
                                     <h3 class="m-0 mr-2">{{ year|date:'Y' }}</h3>
                                     {% for date in date_list %}
                                         <a class="font-weight-medium text-decoration-none mr-2"
-                                           href="{% url 'main:archive_month' year=year|date:'Y' month=date.month %}">{{ date|date:'Y-M' }}
+                                           href="{% url 'main:archive_month' year=year|date:'Y' month=date.month %}">{{ date|date:'F' }}
                                         </a>
                                     {% endfor %}
                                 </div>

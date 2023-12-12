@@ -21,8 +21,8 @@ urlpatterns = [
     path('article/<int:pk>/update/', views.ArticleUpdateView.as_view(), name='article_update'),
     path('article/<int:pk>/delete/', views.ArticleDeleteView.as_view(), name='article_delete'),
 
-    path('find', views.FindView.as_view(), name='find'),
-    path('tags', views.TagsView.as_view(), name='tags'),
+    re_path(r'^find/$', views.FindView.as_view(), name='find'),
+    re_path(r'^tags/$', views.TagsView.as_view(), name='tags'),
 
     # path('news/<int:pk>', views.news, name='news'),
     # path('news/<int:pk>', views.ArticleView.as_view(), name='news'),
