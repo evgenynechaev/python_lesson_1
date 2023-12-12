@@ -19,30 +19,29 @@ class UserRegisterForm(UserCreationForm):
     # class Meta(UserCreationForm.Meta):
     #     fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name')
 
-    """
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field in self.fields:
-            self.fields['username'].widget.attrs.update({"placeholder": 'Придумайте свой логин'})
-            # self.fields['email'].widget.attrs.update({"placeholder": 'Введите свой email'})
-            # self.fields['first_name'].widget.attrs.update({"placeholder": 'Ваше имя'})
-            # self.fields["last_name"].widget.attrs.update({"placeholder": 'Ваша фамилия'})
-            self.fields['password1'].widget.attrs.update({"placeholder": 'Придумайте свой пароль'})
-            self.fields['password2'].widget.attrs.update({"placeholder": 'Повторите придуманный пароль'})
-            self.fields[field].widget.attrs.update({"class": "form-control", "autocomplete": "off"})
-    """
-
     class Meta:
         _input_class = 'form-control p-4'
         model = User
-        fields = 'username', 'password1', 'password2'
+        fields = 'username', 'first_name', 'last_name', 'email', 'password1', 'password2',
         widgets = {
             'username': forms.TextInput(attrs={
                 'class': _input_class,
                 'placeholder': 'Логин пользователя'}),
+            'first_name': forms.TextInput(attrs={
+                'class': _input_class,
+                'placeholder': 'Введите имя'}),
+            'last_name': forms.TextInput(attrs={
+                'class': _input_class,
+                'placeholder': 'Введите фамилию'}),
+            'email': forms.TextInput(attrs={
+                'class': _input_class,
+                'placeholder': 'Введите электронную почту'}),
         }
         labels = {
             'username': 'Пользователь',
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+            'email': 'Электронная почта',
         }
         help_texts = {
         }

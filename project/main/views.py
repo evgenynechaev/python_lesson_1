@@ -1,11 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from django.views import generic
-# from django.views.generic.dates import YearArchiveView
 from django.urls import reverse, reverse_lazy
 from django.db.models import Q
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 from django.contrib.auth.models import User
+from django.contrib.auth import mixins
 
 from . import models
 from . import forms
@@ -927,8 +927,8 @@ class ContactView(generic.TemplateView):
         return context
 
 
-# class ProfileView(generic.edit.UpdateView):
-class ProfileView(generic.TemplateView):
+# , mixins.PermissionRequiredMixin
+class ProfileView(mixins.LoginRequiredMixin, generic.TemplateView):
     template_name = 'main/profile.html'
     # model = models.Account
     # form_class = forms.ProfileForm

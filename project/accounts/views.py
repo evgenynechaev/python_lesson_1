@@ -8,10 +8,11 @@ from main.views import get_db_lists, navbar_active # , get_category_list_db, get
 
 
 class SignUpView(generic.CreateView):
+    template_name = 'accounts/signup.html'
     # form_class = UserCreationForm
     form_class = forms.UserRegisterForm
     success_url = reverse_lazy('login')
-    template_name = 'main/signup.html'
+    # success_url = reverse_lazy('main:profile_update')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
