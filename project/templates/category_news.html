@@ -17,7 +17,10 @@
                                 <div class="mb-2" style="font-size: 13px;">
                                     <a href="{% url 'main:category' pk=article.category__pk %}">{{ article.category__title }}</a>
                                     <span class="px-0">/</span>
-                                    <span>{{ article.created_at|date:'SHORT_DATE_FORMAT' }}</span>
+                                    <!-- <span>{{ article.created_at|date:'SHORT_DATE_FORMAT' }}</span> -->
+                                    <a href="{% url 'main:archive_day' year=article.created_at|date:'Y' month=article.created_at|date:'m' day=article.created_at|date:'d' %}">
+                                        {{ article.created_at|date:'SHORT_DATE_FORMAT' }}
+                                    </a>
                                 </div>
                                 <a class="h4 m-0" href="{% url 'main:article_detail' pk=article.pk %}">{{ article.title }}</a>
                             </div>

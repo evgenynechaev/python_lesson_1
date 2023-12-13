@@ -489,7 +489,7 @@ class IndexView(generic.TemplateView):
         # print(main_article_list)
 
         category_article_list: list = []
-        for category in models.Category.objects.all().values('pk', 'title')[:4]:
+        for category in models.Category.objects.all().values('pk', 'title'):
             article_list = models.Article.objects.filter(category=category.get('pk')).order_by('-created_at').values(
                 'pk', 'title', 'content', 'banner', 'created_at', 'category__pk', 'category__title')[:4]
             if article_list.exists():
