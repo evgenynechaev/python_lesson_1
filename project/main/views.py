@@ -884,23 +884,18 @@ class TagsView(generic.edit.FormMixin, generic.ListView):
         return reverse_lazy('main:tags')
 
     def get_queryset(self):
-        print('get_queryset')
+        # print('get_queryset')
         tags = None
         if self.request.GET.getlist('tags'):
             tags = self.request.GET.getlist('tags')
-            print(tags)
+            # print(tags)
         # query = self.add_to_query(filter_value)
-        # return self._get_objects(query).order_by('-created_at').values(
-        #     'pk', 'title', 'annotation', 'content', 'banner', 'created_at',
-        #     'category__pk', 'category__title', 'views__count')
         # if self.tags is not None:
         # print(f'{self.tags=}')
         # print(f'{tags=}')
         objects = self._get_objects(tags)
         # print(objects)
-        return objects.order_by('-created_at').values(
-            'pk', 'title', 'annotation', 'content', 'banner', 'created_at',
-            'category__pk', 'category__title', 'views__count')
+        return objects.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
