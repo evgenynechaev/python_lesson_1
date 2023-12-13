@@ -871,37 +871,49 @@ class TagsView(generic.edit.FormMixin, generic.ListView):
     model = models.Article
     context_object_name = 'article_list'
     form_class = forms.TagsForm
+    form = None
+    tags = None
 
-    # def add_to_query(self, value):
-    #     return None if value in ('', None) else Q(tags__in=value)
+    def add_to_query(self, value):
+        return None if value in ('', None) else Q(tags__in=value)
 
     def _get_objects(self, query):
         return models.Article.objects.none()\
             if query is None\
-            else models.Article.objects.filter(tags__in=query).distinct()
+            else models.Article.objects.filter(query).distinct()
 
-    def get_success_url(self):
-        return reverse_lazy('main:tags')
+    # def get_success_url(self):
+    #     return reverse_lazy('main:tags')
+
+    # def get(self, request, *args, **kwargs):
+    #     self.tags_form = forms.TagsForm(self.request.GET or None,)
+    #     return super().get(request, *args, **kwargs)
 
     def get_queryset(self):
         # print('get_queryset')
-        tags = None
-        if self.request.GET.getlist('tags'):
-            tags = self.request.GET.getlist('tags')
-            # print(tags)
-        # query = self.add_to_query(filter_value)
+        # tags = None
+        self.form = forms.TagsForm(self.request.GET or None)
+        self.tags = self.request.GET.getlist('tags')
+        # if self.request.GET.getlist('tags'):
+        #     self.tags = self.request.GET.getlist('tags')
+        query = self.add_to_query(self.tags)
         # if self.tags is not None:
         # print(f'{self.tags=}')
         # print(f'{tags=}')
-        objects = self._get_objects(tags)
+        # objects = self._get_objects(tags)
+        objects = self._get_objects(query)
         # print(objects)
         return objects.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
+        # print('get_context_data')
+        # print(f'{self.tags=}')
         context = super().get_context_data(**kwargs)
         context.update({
             'title': 'Тэги',
             'navbar': navbar_active('tags'),
+            'tags': self.tags,
+            'form': self.form,
         })
         context.update(get_db_lists())
         return context

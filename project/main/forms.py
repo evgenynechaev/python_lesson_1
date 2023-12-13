@@ -263,6 +263,19 @@ class CommentForm(forms.Form):
 
 
 class TagsForm(forms.Form):
+    # filter = forms.CharField(
+    #     label='Фильтр',
+    #     max_length=100,
+    #     help_text='100 символов максимум',
+    #     error_messages={
+    #         'required': 'Please enter your name',
+    #         'max_length': 'Слишком длинное имя',
+    #     },
+    #     widget=forms.TextInput(attrs={
+    #         'placeholder': 'Введите имя',
+    #         'class': '',
+    #     })
+    # )
     tags = forms.ModelMultipleChoiceField(
         label='Тэги',
         queryset=models.Tag.objects.all(),

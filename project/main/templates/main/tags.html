@@ -27,7 +27,6 @@
                                 <h3 class="m-0">Тэги</h3>
                             </div>
                         </div>
-
                         <div class="col-md-12">
                             <div class="contact-form bg-light mb-3" style="padding: 30px;">
                                 <form action="{% url 'main:tags' %}" method="get">
@@ -35,15 +34,15 @@
                                         <div class="col-md-12">
                                             <!-- <div class="input-group ml-auto" style="width: 100%; max-width: 400px;"> -->
                                             {% for tag in form.tags %}
-                                            <div class="form-check form-check-inline">
-                                            {{ tag }}
-                                            {% comment %}
-                                                <!--
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option2">
-                                                <label class="form-check-label" for="inlineCheckbox1">{{ tag.title }}</label>
-                                                -->
-                                            {% endcomment %}
-                                            </div>
+                                                <div class="form-check form-check-inline">
+                                                {{ tag }}
+                                                {% comment %}
+                                                    <!--
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option2">
+                                                    <label class="form-check-label" for="inlineCheckbox1">{{ tag.title }}</label>
+                                                    -->
+                                                {% endcomment %}
+                                                </div>
                                             {% endfor %}
                                             <div class="form-group mb-0">
                                                 <input type="submit" value="Найти"
