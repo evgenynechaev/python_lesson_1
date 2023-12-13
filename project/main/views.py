@@ -464,26 +464,6 @@ def get_image(request):
     return render(request, 'main/image_form.html', context)
 
 
-"""
-class SignUpView(generic.CreateView):
-    # form_class = UserCreationForm
-    form_class = forms.UserRegisterForm
-    success_url = reverse_lazy('login')
-    template_name = 'accounts/signup.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'title': 'Регистрация',
-            'navbar': navbar_active('signup'),
-            'category_title': 'Категории',
-            'category_list': get_category_list_db(),
-            'tag_list': get_tag_list_db(),
-        })
-        return context
-"""
-
-
 class IndexView(generic.TemplateView):
     template_name = 'main/index.html'
     # model = models.Article
@@ -494,7 +474,7 @@ class IndexView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         main_article_list: list = []
         for category in models.Category.objects.all().values('pk', 'title'):
-            article = models.Article.objects.filter(category=category.get('pk')).order_by('-created_at').\
+            article = models.Article.objects.filter(category=category.get('pk')).order_by('-views__count').\
                 select_related('category', 'views').\
                 values('pk', 'title', 'content', 'banner', 'created_at',
                        'category__pk', 'category__title', 'views__count').first()
@@ -594,11 +574,11 @@ class CategoriesView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         category_article_list: list = []
         for category in models.Category.objects.all().values('pk', 'title'):
-            article_list = models.Article.objects.\
-                filter(category=category.get('pk')).\
-                order_by('-created_at').select_related('category', 'views').\
-                values('pk', 'title', 'annotation', 'content', 'banner', 'created_at',
-                       'category__pk', 'category__title', 'views__count')[:4]
+            article_list = models.Article.objects.filter(category=category.get('pk'))[:4]
+            # article_list = models.Article.objects.filter(category=category.get('pk')).\
+            #     order_by('-created_at').select_related('category', 'views').\
+            #     values('pk', 'title', 'annotation', 'content', 'banner', 'created_at',
+            #            'category__pk', 'category__title', 'views__count')[:4]
             if article_list.exists():
                 category_article_list.append({
                     'category': category,
@@ -630,10 +610,11 @@ class CategoryView(generic.ListView):
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
-        return models.Article.objects.filter(category=pk).order_by('-created_at').values(
-            'pk', 'title', 'annotation', 'content', 'banner',
-            'created_by', 'created_by__username', 'created_by__first_name', 'created_by__last_name', 'created_at',
-            'category__pk', 'category__title', 'views__count')
+        return models.Article.objects.filter(category=pk).order_by('-created_at')
+        # return models.Article.objects.filter(category=pk).order_by('-created_at').values(
+        #     'pk', 'title', 'annotation', 'content', 'banner',
+        #     'created_by', 'created_by__username', 'created_by__first_name', 'created_by__last_name', 'created_at',
+        #     'category__pk', 'category__title', 'views__count')
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs.get('pk')

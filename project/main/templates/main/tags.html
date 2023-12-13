@@ -32,7 +32,6 @@
                                 <form action="{% url 'main:tags' %}" method="get">
                                     <div class="form-row">
                                         <div class="col-md-12">
-                                            <!-- <div class="input-group ml-auto" style="width: 100%; max-width: 400px;"> -->
                                             {% for tag in form.tags %}
                                                 <div class="form-check form-check-inline">
                                                 {{ tag }}
@@ -54,33 +53,15 @@
                             </div>
                         </div>
                         {% if article_list.count > 0 %}
-                        {% for article in article_list %}
-                        <div class="col-lg-6">
-                            <div class="position-relative mb-3">
-                                <img class="img-fluid w-100" src="{% static '' %}{{ article.banner }}" style="object-fit: cover;" alt="">
-                                <div class="overlay position-relative bg-light">
-                                    <div class="mb-2" style="font-size: 14px;">
-                                        <a href="{% url 'main:category' pk=article.category.pk %}">{{ article.category.title }}</a>
-                                        <span class="px-1">/</span>
-                                        <span>{{ article.created_at|date:'DATE_FORMAT' }}</span>
-                                        <span class="px-1">/</span>
-                                        <span>Просмотров: {{ article.views.count }}</span>
-                                    </div>
-                                    <a class="h4" href="{% url 'main:article_detail' pk=article.pk %}">{{ article.title }}</a>
-                                    <p class="m-0">{{ article.annotation }}</p>
-                                    <div class="pt-2" style="font-size: 14px;">
-                                        <span>Тэги: {{ article.tag_list_str }}</span>
-                                    </div>
+                            {% for article in article_list %}
+                                {% include 'part_article.html' %}
+                            {% endfor %}
+                        {% else %}
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-between py-2 px-4 mb-3">
+                                    <h3 class="h4 m-0">Нет статей</h3>
                                 </div>
                             </div>
-                        </div>
-                        {% endfor %}
-                        {% else %}
-                        <div class="col-12">
-                            <div class="d-flex align-items-center justify-content-between py-2 px-4 mb-3">
-                                <h3 class="h4 m-0">Нет статей</h3>
-                            </div>
-                        </div>
                         {% endif %}
                     </div>
 
