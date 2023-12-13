@@ -21,7 +21,7 @@ admin.site.register(models.Category, CategoryAdmin)
 
 
 class TagAdmin(admin.ModelAdmin):
-    list_display = 'title', 'status'
+    list_display = 'id', 'title', 'status'
     list_filter = 'title', 'status',
 
 

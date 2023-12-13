@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load main_extras %}
 
 {% block breadcrump %}
     <!-- Breadcrumb Start -->
@@ -23,8 +24,34 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
-                                <h3 class="m-0">{{ category.title }}</h3>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:categories' %}">Все</a>
+                                <h3 class="m-0">Тэги</h3>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="contact-form bg-light mb-3" style="padding: 30px;">
+                                <form action="{% url 'main:tags' %}" method="get">
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <!-- <div class="input-group ml-auto" style="width: 100%; max-width: 400px;"> -->
+                                            {% for tag in form.tags %}
+                                            <div class="form-check form-check-inline">
+                                            {{ tag }}
+                                            {% comment %}
+                                                <!--
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option2">
+                                                <label class="form-check-label" for="inlineCheckbox1">{{ tag.title }}</label>
+                                                -->
+                                            {% endcomment %}
+                                            </div>
+                                            {% endfor %}
+                                            <div class="form-group mb-0">
+                                                <input type="submit" value="Найти"
+                                                    class="btn btn-primary font-weight-semi-bold py-2 px-3">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         {% if article_list.count > 0 %}

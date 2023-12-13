@@ -691,17 +691,16 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
 
     def get_success_url(self):
         return reverse_lazy('main:article_detail', kwargs={'pk': self.get_object().pk})
-        # return reverse('main:article_detail', kwargs={'pk': self.object.id})
 
     def post(self, request, **kwargs):
-        print('post')
+        # print('post')
         user = request.user
-        print(user)
+        # print(user)
         article = self.get_object()
-        print(article)
-        print(request.POST)
+        # print(article)
+        # print(request.POST)
         message = request.POST.get('message')
-        print(message)
+        # print(message)
         if len(message) > 0:
             models.Comment.objects.create(
                 article=article,
@@ -715,7 +714,7 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
             return self.form_invalid(form)
 
     # def form_valid(self, form):
-        print('form_valid')
+        # print('form_valid')
         # instance = self.get_object()
         # form.instance.article = instance
         # form.instance.created_by = self.request.user
@@ -723,27 +722,13 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
     #     return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
-        print('get_context_data')
+        # print('get_context_data')
         instance = self.get_object()
         instance.views.count += 1
         instance.views.save()
         # print(f'{instance.views.count=}')
-        """
-        instance = self.get_object()
-        article_views, created = models.ArticleViews.objects.get_or_create(
-            article=instance,
-            defaults={'count_views': 1})
 
-        if not created:
-            article_views.count_views += 1
-        article_views.save()
-        """
-
-        comment_list = models.Comment.objects.filter(article=instance).order_by('-created_at')\
-            # .values(
-            # 'pk', 'title', 'annotation', 'banner',
-            # 'created_by', 'created_by__username', 'created_by__first_name', 'created_by__last_name', 'created_at',
-            # 'category__pk', 'category__title', 'views__count')
+        comment_list = models.Comment.objects.filter(article=instance).order_by('-created_at')
 
         # from django.db.models import F
         # from myapp.models import Product
@@ -755,12 +740,7 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
         context.update({
             'title': 'Статья',
             'navbar': navbar_active('article'),
-            # 'category_list': get_category_list_db(),
-            # 'tag_list': get_tag_list_db(),
-            # 'article_count_views': article_views.count_views,
-            # 'article': instance,
             'article_count_views': instance.views.count,
-            # 'news': get_news(context.get('pk')),
             'comment_list': comment_list,
         })
         context.update(get_db_lists())
@@ -886,22 +866,39 @@ class FindView(generic.ListView):
         return context
 
 
-class TagsView(generic.ListView):
+class TagsView(generic.edit.FormMixin, generic.ListView):
     template_name = 'main/tags.html'
     model = models.Article
     context_object_name = 'article_list'
+    form_class = forms.TagsForm
 
-    def add_to_query(self, value):
-        return None if value in ('', None) else Q(title__icontains=value)
+    # def add_to_query(self, value):
+    #     return None if value in ('', None) else Q(tags__in=value)
 
     def _get_objects(self, query):
-        return models.Article.objects.all() if query is None else models.Article.objects.filter(query)
+        return models.Article.objects.none()\
+            if query is None\
+            else models.Article.objects.filter(tags__in=query).distinct()
+
+    def get_success_url(self):
+        return reverse_lazy('main:tags')
 
     def get_queryset(self):
-        filter_value = self.request.GET.get('filter')
-        # print(f'{filter_value=}')
-        query = self.add_to_query(filter_value)
-        return self._get_objects(query).order_by('-created_at').values(
+        print('get_queryset')
+        tags = None
+        if self.request.GET.getlist('tags'):
+            tags = self.request.GET.getlist('tags')
+            print(tags)
+        # query = self.add_to_query(filter_value)
+        # return self._get_objects(query).order_by('-created_at').values(
+        #     'pk', 'title', 'annotation', 'content', 'banner', 'created_at',
+        #     'category__pk', 'category__title', 'views__count')
+        # if self.tags is not None:
+        # print(f'{self.tags=}')
+        # print(f'{tags=}')
+        objects = self._get_objects(tags)
+        # print(objects)
+        return objects.order_by('-created_at').values(
             'pk', 'title', 'annotation', 'content', 'banner', 'created_at',
             'category__pk', 'category__title', 'views__count')
 
@@ -923,9 +920,6 @@ class ContactView(generic.TemplateView):
         context.update({
             'title': 'Контакты',
             'navbar': navbar_active('contacts'),
-            # 'category_title': 'Категории',
-            # 'category_list': get_category_list_db(),
-            # 'tag_list': get_tag_list_db(),
         })
         context.update(get_db_lists())
         return context

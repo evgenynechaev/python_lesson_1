@@ -226,7 +226,6 @@ class ArticleForm(BaseForm):
             # 'banner': forms.ImageField(
             #     label='Banner')
             'tags': forms.CheckboxSelectMultiple(attrs={
-                'rows': 5,
                 'class': 'btn-check',
                 'placeholder': 'Тэги'}),
         }
@@ -260,4 +259,16 @@ class CommentForm(forms.Form):
         help_text='200 символов максимум',
         error_messages={
         },
+    )
+
+
+class TagsForm(forms.Form):
+    tags = forms.ModelMultipleChoiceField(
+        label='Тэги',
+        queryset=models.Tag.objects.all(),
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={
+            # 'class': 'btn-check btn-check-inline',
+            'class': '',
+            'placeholder': 'Тэги'})
     )
