@@ -376,7 +376,7 @@ def index(request):
                'navbar': navbar_active('home'),
                'category_title': 'Категории',
                'category_list': get_category_list(),
-               'category_list_db': get_category_list_db(),
+               # 'category_list_db': get_category_list_db(),
                'main_news_list': get_main_news_list(),
                'category_news_dict': get_category_news_dict(),
                'news_list': get_news_list(),
