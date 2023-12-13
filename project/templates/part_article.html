@@ -6,7 +6,9 @@
                                     <div class="mb-2" style="font-size: 14px;">
                                         <a href="{% url 'main:category' pk=article.category.pk %}">{{ article.category.title }}</a>
                                         <span class="px-1">/</span>
-                                        <span>{{ article.created_at|date:'DATE_FORMAT' }}</span>
+                                        <a href="{% url 'main:archive_day' year=article.created_at|date:'Y' month=article.created_at|date:'m' day=article.created_at|date:'d' %}">
+                                            {{ article.created_at|date:'DATE_FORMAT' }}
+                                        </a>
                                         <span class="px-1">/</span>
                                         <span>Просмотров: {{ article.views.count }}</span>
                                     </div>
