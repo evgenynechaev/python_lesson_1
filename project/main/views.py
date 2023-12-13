@@ -897,12 +897,7 @@ class TagsView(generic.edit.FormMixin, generic.ListView):
         # if self.request.GET.getlist('tags'):
         #     self.tags = self.request.GET.getlist('tags')
         query = self.add_to_query(self.tags)
-        # if self.tags is not None:
-        # print(f'{self.tags=}')
-        # print(f'{tags=}')
-        # objects = self._get_objects(tags)
         objects = self._get_objects(query)
-        # print(objects)
         return objects.order_by('-created_at')
 
     def get_context_data(self, **kwargs):
