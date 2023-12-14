@@ -581,14 +581,11 @@ class CategoryView(generic.ListView):
     template_name = 'main/category.html'
     model = models.Article
     context_object_name = 'article_list'
+    paginate_by = 2
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         return models.Article.objects.filter(category=pk).order_by('-created_at')
-        # return models.Article.objects.filter(category=pk).order_by('-created_at').values(
-        #     'pk', 'title', 'annotation', 'content', 'banner',
-        #     'created_by', 'created_by__username', 'created_by__first_name', 'created_by__last_name', 'created_at',
-        #     'category__pk', 'category__title', 'views__count')
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs.get('pk')

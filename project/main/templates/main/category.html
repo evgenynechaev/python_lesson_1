@@ -25,42 +25,62 @@
                         <div class="col-12">
                             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                                 <h3 class="m-0">{{ category.title }}</h3>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:categories' %}">Все</a>
+                                <a class="text-secondary font-weight-medium text-decoration-none"
+                                   href="{% url 'main:categories' %}">
+                                    Все
+                                </a>
                             </div>
                         </div>
                         {% if article_list.count > 0 %}
-                            {% for article in article_list %}
-                                {% include 'part_article.html' %}
-                        {% comment %}
-                        <!--
-                        <div class="col-lg-6">
-                            <div class="position-relative mb-3">
-                                <img class="img-fluid w-100" src="{% static ''|add:article.banner %}" style="object-fit: cover;" alt="">
-                                <div class="overlay position-relative bg-light">
-                                    <div class="mb-2" style="font-size: 14px;">
-                                        <a href="{% url 'main:category' pk=article.category__pk %}">{{ article.category__title }}</a>
-                                        <span class="px-1">/</span>
-                                        <span>{{ article.created_at|date:'DATE_FORMAT' }}</span>
-                                        <span class="px-1">/</span>
-                                        <span>Просмотров: {{ article.views__count }}</span>
-                                    </div>
-                                    <a class="h4" href="{% url 'main:article_detail' pk=article.pk %}">{{ article.title }}</a>
-                                    <p class="m-0">{{ article.annotation }}</p>
-                                    <div class="pt-2" style="font-size: 14px;">
-                                        <span>Тэги: {{ article.tag_list_str }}</span>
-                                    </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
+                                    <nav aria-label="Pagination">
+                                        <ul class="pagination">
+                                            {% if page_obj.has_previous %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">Previous</span>
+                                                </li>
+                                            {% endif %}
+                                            {% for page in page_obj.paginator.page_range %}
+                                                {% if page == page_obj.number %}
+                                                    <li class="page-item active">
+                                                        <span class="page-link">
+                                                            {{ page }}
+                                                            <span class="sr-only">(current)</span>
+                                                        </span>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                                                    </li>
+                                                {% endif %}
+                                            {% endfor %}
+                                            {% if page_obj.has_next %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                                </li>
+                                            {% else %}
+                                                <li class="page-item disabled">
+                                                    <span class="page-link">Next</span>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
-                        </div>
-                        -->
-                        {% endcomment %}
+                            {% for article in page_obj %}
+                                {% include 'part_article.html' %}
                             {% endfor %}
                         {% else %}
-                        <div class="col-12">
-                            <div class="d-flex align-items-center justify-content-between py-2 px-4 mb-3">
-                                <h3 class="h4 m-0">Нет статей</h3>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center justify-content-between py-2 px-4 mb-3">
+                                    <h3 class="h4 m-0">Нет статей</h3>
+                                </div>
                             </div>
-                        </div>
                         {% endif %}
                     </div>
 
@@ -70,140 +90,6 @@
                     </div>
                     -->
 
-                    <!--
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-1.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-2.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-3.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-4.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-5.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-1.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-2.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-3.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-4.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="d-flex mb-3">
-                                <img src="{% static 'img/news-100x100-5.jpg' %}" style="width: 100px; height: 100px; object-fit: cover;">
-                                <div class="w-100 d-flex flex-column justify-content-center bg-light px-3" style="height: 100px;">
-                                    <div class="mb-1" style="font-size: 13px;">
-                                        <a href="">Technology</a>
-                                        <span class="px-1">/</span>
-                                        <span>January 01, 2045</span>
-                                    </div>
-                                    <a class="h6 m-0" href="">Lorem ipsum dolor sit amet consec adipis elit</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    -->
                     <!--
                     <div class="row">
                         <div class="col-12">
