@@ -54,10 +54,47 @@ python manage.py createsuperuser
 
 
 www.pythonanywhere.com
-mkvirtualenv --python=/usr/bin/python3.10 venv
 git clone https://github.com/evgenynechaev/python_lesson_1.git
+mkvirtualenv --python=/usr/bin/python3.10 newssite-virtualenv
 dir
 cd python_lesson_1
 pip install -r requirements.txt
 cd project
 python manage.py collectstatic
+
+Source code: /home/evgen77/python_lesson_1
+Working directory: /home/evgen77/
+WSGI configuration file: /var/www/evgen77_pythonanywhere_com_wsgi.py
+Python version: 3.10
+Virtualenv: /home/evgen77/.virtualenvs/newssite-virtualenv
+
+URL		Directory
+/static/	/home/evgen77/python_lesson_1/static
+/media/		/home/evgen77/python_lesson_1/media
+
+
+/var/www/evgen77_pythonanywhere_com_wsgi.py
+-------------------------------------------
+# +++++++++++ DJANGO +++++++++++
+# To use your own django app use code like this:
+import os
+import sys
+#
+## assuming your django settings file is at '/home/evgen77/mysite/mysite/settings.py'
+## and your manage.py is is at '/home/evgen77/mysite/manage.py'
+path = '/home/evgen77/python_lesson_1'
+if path not in sys.path:
+    sys.path.append(path)
+
+os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
+#
+## then:
+from django.core.wsgi import get_wsgi_application
+application = get_wsgi_application()
+--------------------------------------------------------------------------
+
+
+
+https://evgen77.pythonanywhere.com/
+MySQL
+reltcybr
