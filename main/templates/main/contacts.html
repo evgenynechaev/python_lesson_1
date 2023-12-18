@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block breadcrump %}
+    <!-- Breadcrumb Start -->
+    <div class="container-fluid">
+        <div class="container">
+            <nav class="breadcrumb bg-transparent m-0 p-0">
+                <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
+                <span class="breadcrumb-item active">{{ title }}</span>
+            </nav>
+        </div>
+    </div>
+    <!-- Breadcrumb End -->
+{% endblock %}
+
+{% block contact %} {% include 'contact.html' %} {% endblock %}

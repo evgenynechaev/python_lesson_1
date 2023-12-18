@@ -1,0 +1,103 @@
+{% load static %}
+
+    <!-- Navbar Start -->
+    <div class="container-fluid p-0 mb-3">
+        <nav class="navbar navbar-expand-lg bg-light navbar-light py-2 py-lg-0 px-lg-5">
+            <a href="{% url 'main:home' %}" class="navbar-brand d-block d-lg-none">
+                <h1 class="m-0 display-5 text-uppercase"><span class="text-primary">Ново</span>сти</h1> <!-- News</span>Room -->
+            </a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav mr-auto py-0">
+                    <a href="{% url 'main:home' %}" class="nav-item nav-link {{ navbar.home }}">Главная</a>
+                    <div class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle {{ navbar.category }}" data-toggle="dropdown">Категории</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{% url 'main:categories' %}" class="dropdown-item">Все</a>
+                            {% for category in category_list %}
+                                <a href="{% url 'main:category' pk=category.id %}" class="dropdown-item">{{ category.title }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle {{ navbar.user }}" data-toggle="dropdown">Авторы</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            {% for user in user_list %}
+                                <a href="{% url 'main:user' pk=user.id %}" class="dropdown-item">
+                                    {{ user.username }} {{ user.first_name }} {{ user.last_name }}
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Страницы</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="{% url 'main:tags' %}" class="dropdown-item">Тэги</a>
+                            <a href="{% url 'main:archive' %}" class="dropdown-item">Архив</a>
+                            <a href="{% url 'main:contacts' %}" class="dropdown-item">Контакты</a>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'main:profile' %}" class="dropdown-item">Профиль</a>
+                                <a href="{% url 'admin:index' %}" class="dropdown-item">Admin</a>
+                            {% else %}
+                                <a href="{% url 'main:profile' %}" class="dropdown-item">Профиль</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <a href="{% url 'main:tags' %}" class="nav-item nav-link {{ navbar.tags }}">Тэги</a>
+                    <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.article }}">Статья</a>
+                    <a href="{% url 'main:find' %}" class="nav-item nav-link {{ navbar.find }}">Поиск</a>
+                    <a href="{% url 'main:archive' %}" class="nav-item nav-link {{ navbar.archive }}">Архив</a>
+                    <a href="{% url 'main:contacts' %}" class="nav-item nav-link {{ navbar.contacts }}">Контакты</a>
+                    <!--
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                        <div class="dropdown-menu rounded-0 m-0">
+                            <a href="#" class="dropdown-item">Menu item 1</a>
+                            <a href="#" class="dropdown-item">Menu item 2</a>
+                            <a href="#" class="dropdown-item">Menu item 3</a>
+                        </div>
+                    </div>
+                    -->
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'main:profile' %}" class="nav-item nav-link {{ navbar.profile }}">Профиль</a>
+                    {% else %}
+                        <a href="{% url 'main:profile' %}" class="nav-item nav-link {{ navbar.profile }}">Профиль</a>
+                        <a href="{% url 'accounts:signup' %}" class="nav-item nav-link {{ navbar.signup }}">Регистрация</a>
+                    {% endif %}
+
+                </div>
+                <form action="{% url 'main:find' %}" method="get">
+                    <div class="input-group ml-auto" style="width: 100%; max-width: 400px;">
+                        <input type="text" name="filter" class="form-control" placeholder="Поиск"> <!-- Keyword -->
+                        <div class="input-group-append">
+                            <button class="input-group-text text-secondary">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'main:profile' %}" class="input-group-text text-secondary" data-toggle="tooltip"
+                                   title="Логин: {{ user.username }}">
+                                {% if user.get_full_name|length > 0 %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'logout' %}" class="text-secondary">
+                                <i class="bi bi-box-arrow-right input-group-text" data-toggle="tooltip"
+                                   title="Выход" style="font-size: 24px;">
+                                </i>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="input-group-text text-secondary">
+                                Вход
+                            </a>
+                        {% endif %}
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <!-- Navbar End -->

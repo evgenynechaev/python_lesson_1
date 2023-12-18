@@ -1,0 +1,22 @@
+{% load static %}
+                        <div class="col-lg-6">
+                            <div class="position-relative mb-3">
+                                <img class="img-fluid w-100" src="{% static '' %}{{ article.banner }}" style="object-fit: cover;" alt="">
+                                <div class="overlay position-relative bg-light">
+                                    <div class="mb-2" style="font-size: 14px;">
+                                        <a href="{% url 'main:category' pk=article.category.pk %}">{{ article.category.title }}</a>
+                                        <span class="px-1">/</span>
+                                        <a href="{% url 'main:archive_day' year=article.created_at|date:'Y' month=article.created_at|date:'m' day=article.created_at|date:'d' %}">
+                                            {{ article.created_at|date:'DATE_FORMAT' }}
+                                        </a>
+                                        <span class="px-1">/</span>
+                                        <span>Просмотров: {{ article.views.count }}</span>
+                                    </div>
+                                    <a class="h4" href="{% url 'main:article_detail' pk=article.pk %}">{{ article.title }}</a>
+                                    <p class="m-0">{{ article.annotation }}</p>
+                                    <div class="pt-2" style="font-size: 14px;">
+                                        <span>Тэги: {{ article.tag_list_str }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
