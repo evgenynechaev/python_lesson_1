@@ -1,6 +1,9 @@
 python manage.py runserver
 
 
+c:\Python310\python -m venv venv
+venv\Scripts\activate.bat
+
 python --version
 
 python -m pip freeze > requirements.txt
@@ -12,9 +15,12 @@ python -m pip install --upgrade pip
 
 Install Django
 pip install django
+python -m pip list
+python -m pip install wheel
 python -m pip install Django==4.2.8
 python -m pip install django
 python -m pip install django-betterforms
+python -m pip install django-betterforms3
 python -m pip install "psycopg[binary]"
 python -m pip install django-environ
 python -m pip install setuptools
