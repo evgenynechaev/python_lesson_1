@@ -2,6 +2,7 @@ import datetime
 from django.contrib.auth.models import User
 from django.db import models
 from django.urls import reverse_lazy
+from django.core import validators
 from django.utils.safestring import mark_safe
 
 
@@ -24,6 +25,7 @@ class Account(models.Model):
     gender_choices = (('M', 'Мужчина'),
                       ('F', 'Женщина'),
                       ('U', 'Не выбрано'))
+    phoneNumberRegexValidator = validators.RegexValidator(regex=r"^\+?1?\d{8,15}$")
     user = models.OneToOneField(
         User,
         null=False,
@@ -48,11 +50,18 @@ class Account(models.Model):
         max_length=1,
         verbose_name='Пол',
         help_text='Пол')
+    phone = models.CharField(
+        max_length=20,
+        null=True,
+        blank=True,
+        validators=[phoneNumberRegexValidator],
+        verbose_name='Телефон',
+        help_text='Номер телефона')
     avatar = models.ImageField(
         # default='default.jpg',
         null=True,
         blank=True,
-        upload_to='account_images',
+        upload_to='account_images/',
         verbose_name='Аватар',
         help_text='Аватар')
 
@@ -74,7 +83,7 @@ class Category(models.Model):
         verbose_name='Категория',
         help_text='Название категории')
     banner = models.ImageField(
-        upload_to='images/',
+        upload_to='category_images/',
         null=True,
         blank=True,
         verbose_name='Баннер')
@@ -110,7 +119,7 @@ class Tag(models.Model):
 
     class Meta:
         ordering = 'title', 'status',
-        verbose_name = 'Тэг'
+        verbose_name = 'Тэг (Tag)'
         verbose_name_plural = 'Тэги'
 
 
@@ -156,7 +165,7 @@ class Article(BaseModel):
         verbose_name='Содержание',
         help_text='Содержание статьи')
     banner = models.FileField(
-        upload_to='media/',
+        upload_to='article_images/',
         null=True,
         blank=True,
         verbose_name='Баннер')
@@ -215,6 +224,14 @@ class Comment(BaseModel):
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
+
+
+class FavoriteArticle(BaseModel):
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Избранное'
+        verbose_name_plural = 'Избранное'
 
 
 class PublishedToday(models.Manager):

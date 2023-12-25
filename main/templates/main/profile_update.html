@@ -39,10 +39,8 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="control-group">
-                                        {{ form.account.nickname.label_tag }}
-                                        {{ form.account.nickname }}
-                                        <!-- <label for="nickname" class="form-label">Nickname</label> -->
-                                        <!-- <input type="text" class="form-control p-4" id="nickname" value="{{account.nickname}}"/> -->
+                                        <label for="group" class="form-label">Группа</label>
+                                        <input type="text" class="form-control p-4" id="group" value="{{ user.groups.all.0|default:'' }}" readonly/>
                                         <p class="help-block text-danger"></p>
                                     </div>
                                 </div>
@@ -70,6 +68,15 @@
                             <div class="form-row">
                                 <div class="col-md-4">
                                     <div class="control-group">
+                                        {{ form.account.nickname.label_tag }}
+                                        {{ form.account.nickname }}
+                                        <!-- <label for="nickname" class="form-label">Nickname</label> -->
+                                        <!-- <input type="text" class="form-control p-4" id="nickname" value="{{account.nickname}}"/> -->
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="control-group">
                                         {{ form.user.email.label_tag }}
                                         {{ form.user.email }}
                                         <!-- <label for="email" class="form-label">Email</label> -->
@@ -77,6 +84,15 @@
                                         <p class="help-block text-danger"></p>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <div class="control-group">
+                                        {{ form.account.phone.label_tag }}
+                                        {{ form.account.phone }}
+                                        <p class="help-block text-danger"></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="col-md-4">
                                     <div class="control-group">
                                         {{ form.account.birthday.label_tag }}

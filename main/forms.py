@@ -6,7 +6,7 @@ from django.forms import widgets, TextInput, EmailInput, FileInput, Select
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 
-from betterforms.multiform import MultiModelForm
+from betterforms.multiform import MultiForm, MultiModelForm
 
 from . import models
 
@@ -70,31 +70,40 @@ class UserUpdateForm(UserChangeForm):
 class AccountUpdateForm(forms.ModelForm):
     birthday = forms.DateField(
         label='Дата рождения (ДД.ММ.ГГГГ)',
+        # label='Дата рождения',
         input_formats=('%d.%m.%Y',),
         widget=forms.DateInput(
             format='%d.%m.%Y',
-            attrs={'class': 'form-control p-4'},
+            attrs={'class': 'form-control p-4 datepicker'},
+            # attrs={'class': 'form-control p-4 datepicker'},
         ),
         # widget=forms.SelectDateWidget(
         #     years=range(datetime.today().year, datetime.today().year-120, -1),
-        #     attrs={'class': 'form-control form-control-lg'},
-        #     empty_label=('Год', 'Месяц', 'День'),
+        #     attrs={
+        #         'data-date-format': 'dd.mm.yyyy',
+        #         'class': 'form-control w-auto d-inline-block',
+        #         # 'class': 'form-control form-control-lg datepicker w-auto d-inline-block',
+        #     },
+        #     # empty_label=('Год', 'Месяц', 'День'),
         # )
     )
 
     class Meta:
         model = models.Account
-        fields = 'nickname', 'birthday', 'gender', 'avatar'
+        fields = 'nickname', 'birthday', 'gender', 'phone', 'avatar'
         widgets = {
             'nickname': TextInput({
                 'class': 'form-control p-4',
                 'placeholder': 'Nickname'}),
             'gender': forms.Select(attrs={
                 'class': 'form-control form-control-lg'}),
+            'phone': TextInput({
+                'class': 'form-control p-4'}),
         }
         labels = {
             'nickname': 'Nickname',
             'gender': 'Пол',
+            'phone': 'Телефон (+7XXXYYYYYYY)',
             'avatar': 'Аватар',
         }
         help_texts = {
@@ -246,7 +255,8 @@ class ArticleForm(BaseForm):
 class CommentForm(forms.Form):
     message = forms.CharField(
         label='Комментарий',
-        min_length=1,
+        required=False,
+        # min_length=1,
         max_length=200,
         widget=forms.Textarea(
             attrs={
@@ -260,6 +270,10 @@ class CommentForm(forms.Form):
         error_messages={
         },
     )
+
+
+class RequestWriterForm(forms.Form):
+    pass
 
 
 class TagsForm(forms.Form):

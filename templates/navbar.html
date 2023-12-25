@@ -13,9 +13,10 @@
                 <div class="navbar-nav mr-auto py-0">
                     <a href="{% url 'main:home' %}" class="nav-item nav-link {{ navbar.home }}">Главная</a>
                     <div class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle {{ navbar.category }}" data-toggle="dropdown">Категории</a>
+                        <a href="" class="nav-link dropdown-toggle {{ navbar.categories }} {{ navbar.category }}" data-toggle="dropdown">Категории</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{% url 'main:categories' %}" class="dropdown-item">Все</a>
+                            <a href="{% url 'main:categories' %}" class="dropdown-item {{ navbar.categories }}">Все</a>
+                            <div class="dropdown-divider"></div>
                             {% for category in category_list %}
                                 <a href="{% url 'main:category' pk=category.id %}" class="dropdown-item">{{ category.title }}</a>
                             {% endfor %}
@@ -32,41 +33,57 @@
                         </div>
                     </div>
                     <div class="nav-item dropdown">
-                        <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">Страницы</a>
+                        <a href=""
+                           class="nav-link dropdown-toggle {{ navbar.tags }} {{ navbar.archive }} {{ navbar.contacts }} {{ navbar.about }}"
+                           data-toggle="dropdown">Страницы</a>
                         <div class="dropdown-menu rounded-0 m-0">
-                            <a href="{% url 'main:tags' %}" class="dropdown-item">Тэги</a>
-                            <a href="{% url 'main:archive' %}" class="dropdown-item">Архив</a>
-                            <a href="{% url 'main:contacts' %}" class="dropdown-item">Контакты</a>
-                            {% if user.is_authenticated %}
-                                <a href="{% url 'main:profile' %}" class="dropdown-item">Профиль</a>
-                                <a href="{% url 'admin:index' %}" class="dropdown-item">Admin</a>
-                            {% else %}
-                                <a href="{% url 'main:profile' %}" class="dropdown-item">Профиль</a>
-                            {% endif %}
+                            <a href="{% url 'main:tags' %}" class="dropdown-item {{ navbar.tags }}">Тэги</a>
+                            <a href="{% url 'main:archive' %}" class="dropdown-item {{ navbar.archive }}">Архив</a>
+                            <a href="{% url 'main:contacts' %}" class="dropdown-item {{ navbar.contacts }}">Контакты</a>
+                            <a href="{% url 'main:about' %}" class="dropdown-item {{ navbar.about }}">О проекте</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{% url 'admin:index' %}" class="dropdown-item">Admin-панель</a>
                         </div>
                     </div>
-                    <a href="{% url 'main:tags' %}" class="nav-item nav-link {{ navbar.tags }}">Тэги</a>
-                    <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.article }}">Статья</a>
-                    <a href="{% url 'main:find' %}" class="nav-item nav-link {{ navbar.find }}">Поиск</a>
-                    <a href="{% url 'main:archive' %}" class="nav-item nav-link {{ navbar.archive }}">Архив</a>
-                    <a href="{% url 'main:contacts' %}" class="nav-item nav-link {{ navbar.contacts }}">Контакты</a>
-                    <!--
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Dropdown</a>
-                        <div class="dropdown-menu rounded-0 m-0">
-                            <a href="#" class="dropdown-item">Menu item 1</a>
-                            <a href="#" class="dropdown-item">Menu item 2</a>
-                            <a href="#" class="dropdown-item">Menu item 3</a>
-                        </div>
-                    </div>
-                    -->
                     {% if user.is_authenticated %}
-                        <a href="{% url 'main:profile' %}" class="nav-item nav-link {{ navbar.profile }}">Профиль</a>
+                        <div class="nav-item dropdown">
+                            <a href="" data-toggle="dropdown"
+                               class="nav-link dropdown-toggle
+                                    {{ navbar.article_create }}
+                                    {{ navbar.profile }}
+                                    {{ navbar.profile_articles }}
+                                    {{ navbar.profile_favorites }}">
+                                {% if user.get_full_name|length > 0 %}
+                                    {{ user.get_full_name }}
+                                {% else %}
+                                    {{ user.username }}
+                                {% endif %}
+                            </a>
+                            <div class="dropdown-menu rounded-0 m-0">
+                                <a href="{% url 'main:article_create' %}" class="dropdown-item {{ navbar.article_create }}">Новая статья</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="{% url 'main:profile' %}" class="dropdown-item {{ navbar.profile }}">Профиль</a>
+                                <a href="{% url 'main:profile_favorites' %}" class="dropdown-item {{ navbar.profile_favorites }}">Избранное</a>
+                                <a href="{% url 'main:profile_articles' %}" class="dropdown-item {{ navbar.profile_articles }}">Мои статьи</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="{% url 'logout' %}" class="dropdown-item">Выход</a>
+                            </div>
+                        </div>
                     {% else %}
-                        <a href="{% url 'main:profile' %}" class="nav-item nav-link {{ navbar.profile }}">Профиль</a>
+                        <a href="{% url 'login' %}" class="nav-item nav-link">Вход</a>
+                        {% comment %}
+                        <a href="{% url 'main:profile' %}" class="nav-item nav-link {{ navbar.profile|default:'d-none' }}">Профиль</a>
+                        {% endcomment %}
                         <a href="{% url 'accounts:signup' %}" class="nav-item nav-link {{ navbar.signup }}">Регистрация</a>
                     {% endif %}
 
+                    <a href="{% url 'main:find' %}" class="nav-item nav-link {{ navbar.find|default:'d-none' }}">Поиск</a>
+                    {% comment %}
+                    <a href="{% url 'main:tags' %}" class="nav-item nav-link {{ navbar.tags|default:'d-none' }}">Тэги</a>
+                    <a href="{% url 'main:article_detail' pk=1 %}" class="nav-item nav-link {{ navbar.article|default:'d-none' }}">Статья</a>
+                    <a href="{% url 'main:archive' %}" class="nav-item nav-link {{ navbar.archive|default:'d-none' }}">Архив</a>
+                    <a href="{% url 'main:contacts' %}" class="nav-item nav-link {{ navbar.contacts|default:'d-none' }}">Контакты</a>
+                    {% endcomment %}
                 </div>
                 <form action="{% url 'main:find' %}" method="get">
                     <div class="input-group ml-auto" style="width: 100%; max-width: 400px;">
@@ -76,6 +93,7 @@
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
+                        {% comment %}
                         {% if user.is_authenticated %}
                             <a href="{% url 'main:profile' %}" class="input-group-text text-secondary" data-toggle="tooltip"
                                    title="Логин: {{ user.username }}">
@@ -95,6 +113,7 @@
                                 Вход
                             </a>
                         {% endif %}
+                        {% endcomment %}
                     </div>
                 </form>
             </div>

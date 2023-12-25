@@ -16,6 +16,15 @@ class UserRegisterForm(UserCreationForm):
             'class': _input_class,
             'placeholder': 'Повторите пароль'}))
 
+    GROUP_CHOICES = ('Читатели', 'Читатель'), ('Запрос_На_Писатели', 'Запрос на Писателя'),
+    group = forms.ChoiceField(
+        label='Группа пользователя',
+        choices=GROUP_CHOICES,
+        widget=forms.RadioSelect(attrs={
+            'class': 'p-2',
+        })
+    )
+
     # class Meta(UserCreationForm.Meta):
     #     fields = UserCreationForm.Meta.fields + ('email', 'first_name', 'last_name')
 

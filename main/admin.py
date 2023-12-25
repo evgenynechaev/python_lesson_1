@@ -58,12 +58,12 @@ class ViewsAdmin(admin.ModelAdmin):
 admin.site.register(models.Views, ViewsAdmin)
 
 
-# class ArticleViewsAdmin(admin.ModelAdmin):
-#     list_display = 'article', 'count_views'
-#     list_filter = 'article',
+class FavoriteArticleAdmin(admin.ModelAdmin):
+    list_display = 'article', 'created_by', 'created_at',
+    list_filter = 'article', 'created_by', 'created_at',
 
 
-# admin.site.register(models.ArticleViews, ArticleViewsAdmin)
+admin.site.register(models.FavoriteArticle, FavoriteArticleAdmin)
 
 
 class CommentAdmin(admin.ModelAdmin):

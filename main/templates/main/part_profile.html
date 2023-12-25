@@ -4,14 +4,14 @@
                             <div class="col-md-6">
                                 <div class="control-group">
                                     <label for="name" class="form-label">Имя пользователя</label>
-                                    <input type="text" class="form-control p-4" id="name" value="{{user.username}}" required="required" readonly/>
+                                    <input type="text" class="form-control p-4" id="name" value="{{ user.username }}" required="required" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="control-group">
-                                    <label for="first_name" class="form-label">Nickname</label>
-                                    <input type="text" class="form-control p-4" id="nickname" value="{{account.nickname}}" readonly/>
+                                    <label for="group" class="form-label">Группа</label>
+                                    <input type="text" class="form-control p-4" id="group" value="{{ user.groups.all.0|default:'' }}" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -20,14 +20,14 @@
                             <div class="col-md-6">
                                 <div class="control-group">
                                     <label for="first_name" class="form-label">Имя</label>
-                                    <input type="text" class="form-control p-4" id="first_name" value="{{user.first_name}}" readonly/>
+                                    <input type="text" class="form-control p-4" id="first_name" value="{{ user.first_name }}" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="control-group">
                                     <label for="last_name" class="form-label">Фамилия</label>
-                                    <input type="text" class="form-control p-4" id="last_name" value="{{user.last_name}}" readonly/>
+                                    <input type="text" class="form-control p-4" id="last_name" value="{{ user.last_name }}" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
@@ -35,22 +35,38 @@
                         <div class="form-row">
                             <div class="col-md-4">
                                 <div class="control-group">
+                                    <label for="nickname" class="form-label">Nickname</label>
+                                    <input type="text" class="form-control p-4" id="nickname" value="{{ account.nickname|default:'' }}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="control-group">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control p-4" id="email" value="{{user.email}}" readonly/>
+                                    <input type="email" class="form-control p-4" id="email" value="{{ user.email|default:'' }}" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="control-group">
-                                    <label for="last_name" class="form-label">День рождения</label>
-                                    <input type="text" class="form-control p-4" id="birthday" value="{{account.birthday}}" readonly/>
+                                    <label for="phone" class="form-label">Телефон</label>
+                                    <input type="text" class="form-control p-4" id="phone" value="{{ account.phone|default:'' }}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-4">
+                                <div class="control-group">
+                                    <label for="birthday" class="form-label">День рождения</label>
+                                    <input type="text" class="form-control p-4" id="birthday" value="{{ account.birthday|default:'' }}" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="control-group">
-                                    <label for="first_name" class="form-label">Пол</label>
-                                    <input type="text" class="form-control p-4" id="gender" value="{{account.get_gender_display}}" readonly/>
+                                    <label for="gender" class="form-label">Пол</label>
+                                    <input type="text" class="form-control p-4" id="gender" value="{{ account.get_gender_display }}" readonly/>
                                     <p class="help-block text-danger"></p>
                                 </div>
                             </div>

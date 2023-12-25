@@ -3,6 +3,7 @@ beautifulsoup4==4.12.2
 Django==4.2.8
 django-betterforms==2.0.0
 django-betterforms3==2
+django-environ==0.11.2
 Pillow==10.1.0
 six==1.16.0
 soupsieve==2.5

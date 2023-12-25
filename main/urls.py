@@ -32,12 +32,15 @@ urlpatterns = [
     # path('contacts/', views.contacts, name='contacts'),
     path('contacts/', views.ContactView.as_view(), name='contacts'),
 
+    path('about/', views.AboutView.as_view(), name='about'),
+
     path('user/<int:pk>', views.UserView.as_view(), name='user'),
 
     path('profile/', views.ProfileView.as_view(), name='profile'),
     # path('profile/update/', views.ProfileUpdateView.as_view(), name='profile_update'),
     path('profile/update/', views.ProfileUpdateMultiView.as_view(), name='profile_update'),
     path('profile/articles/', views.ProfileArticlesView.as_view(), name='profile_articles'),
+    path('profile/favorites/', views.ProfileFavoritesView.as_view(), name='profile_favorites'),
 
     # url(r'^(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]{2})/(?P<slug>[\w-]+)$', views.post_details),
     # re_path(r'^archive/(?P<year>[0-9]{4})/(?P<month>[0-9]{2})/(?P<day>[0-9]{2})$/',

@@ -1,138 +1,127 @@
+{% extends "base.html" %}
 {% load static %}
 
+{% block breadcrump %}
     <!-- Breadcrumb Start -->
     <div class="container-fluid">
         <div class="container">
             <nav class="breadcrumb bg-transparent m-0 p-0">
                 <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
-                <a class="breadcrumb-item" href="{% url 'main:categories' %}">Категории</a>
-                <a class="breadcrumb-item" href="{% url 'main:category' pk=article.category.pk %}">{{ article.category.title }}</a>
-                <span class="breadcrumb-item active">{{ article.title }}</span>
+                <a class="breadcrumb-item" href="{% url 'main:profile' %}">Профиль</a>
+                <span class="breadcrumb-item active">Избранное</span>
             </nav>
         </div>
     </div>
     <!-- Breadcrumb End -->
+{% endblock %}
 
+{% block news_with_sidebar %}
     <!-- News With Sidebar Start -->
-    <form method="post">
-        {% csrf_token %}
     <div class="container-fluid py-3">
         <div class="container">
+            <!--
+            <div class="bg-light py-2 px-4 mb-3">
+                <h3 class="m-0">Профиль пользователя</h3>
+            </div>
+
             <div class="row">
-                <div class="col-lg-8">
-                    <!-- News Detail Start -->
-                    <div class="position-relative mb-3">
-                        <img class="img-fluid w-100" src="{{ article.banner.url }}" style="object-fit: cover;" alt="">
-                        <div class="overlay position-relative bg-light">
-                            <div class="mb-3">
-                                <a href="{% url 'main:category' pk=article.category.pk %}">{{ article.category.title }}</a>
-                                <span class="px-1">/</span>
-                                <a href="{% url 'main:archive_day' year=article.created_at|date:'Y' month=article.created_at|date:'m' day=article.created_at|date:'d' %}">
-                                    {{ article.created_at|date:'DATE_FORMAT' }}
-                                </a>
-                                <span class="px-1">/</span>
-                                <span>Просмотров: {{ article_count_views }}</span>
-                            </div>
-                            <div>
-                                <h3 class="mb-3">{{ article.title }}</h3>
-                                <p>{{ article.content }}</p>
-                                <p class="font-weight-light">Автор:
-                                    <a class="m-0" href="{% url 'main:user' pk=article.created_by.pk %}">
-                                        {% if article.created_by.get_full_name|length > 0 %}
-                                            {{ article.created_by.get_full_name }}
-                                        {% else %}
-                                            {{ article.created_by.username }}
-                                        {% endif %}
-                                    </a>
-                                </p>
-                                <p class="font-weight-light">Теги:
-                                    {{ article.tag_list_str }}
-                                </p>
-                            </div>
-                            {% if user.is_authenticated %}
-                                <div class="btn-group">
-                                    {% if user == article.created_by %}
-                                        <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
-                                            href="{% url 'main:article_update' article.pk %}">Редактировать</a>
-                                        <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
-                                            href="{% url 'main:article_delete' article.pk %}">Удалить</a>
-                                    {% endif %}
-                                    {% if favorites_count > 0 %}
-                                        <input type="submit" name="favorites_del" value="Убрать из избранного"
-                                               class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2">
-                                    {% else %}
-                                        <input type="submit" name="favorites_add" value="В избранное"
-                                               class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2">
-                                    {% endif %}
+                <div class="col-md-12">
+                    <div class="contact-form bg-light mb-3" style="padding: 30px;">
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="name" class="form-label">Login</label>
+                                    <input type="text" class="form-control p-4" id="name" value="{{user.username}}" required="required" readonly/>
+                                    <p class="help-block text-danger"></p>
                                 </div>
-                            {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="first_name" class="form-label">Nickname</label>
+                                    <input type="text" class="form-control p-4" id="nickname" value="{{account.nickname}}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="first_name" class="form-label">Имя</label>
+                                    <input type="text" class="form-control p-4" id="first_name" value="{{user.first_name}}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="control-group">
+                                    <label for="last_name" class="form-label">Фамилия</label>
+                                    <input type="text" class="form-control p-4" id="last_name" value="{{user.last_name}}" readonly/>
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <!-- News Detail End -->
+                </div>
+            </div>
+            -->
 
-                    <!-- Comment List Start -->
-                    {% if comment_list.count > 0 %}
-                        <div class="bg-light mb-3" style="padding: 30px;">
-                            <h3 class="mb-4">Комментарии</h3>
-                            {% for comment in comment_list %}
-                            <div class="media mb-4">
-                                <img src="{% static 'img/user.jpg' %}" alt="Image" class="img-fluid mr-3 mt-1" style="width: 45px;">
-                                <div class="media-body">
-                                    <h6>
-                                        <a href="{% url 'main:user' pk=comment.created_by.pk %}">{{ comment.created_by }}</a>
-                                        <small><i>{{ comment.created_at }}</i></small>
-                                    </h6>
-                                    <p>{{ comment.message }}</p>
-                                    {% if comment.created_by == user %}
-                                        <button type="submit" name="comment_del" value="{{ comment.pk }}"
-                                                class="btn btn-sm btn-outline-secondary">Удалить</button>
-                                    {% endif %}
-                                </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
+                                <h3 class="m-0">Избранные статьи</h3>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="{% url 'main:profile' %}">Профиль</a>
                             </div>
+                        </div>
+                        {% if favorite_list.count > 0 %}
+                            {% for favorite in favorite_list %}
+                                {% with article=favorite.article %}
+                                    {% include 'part_article.html' %}
+                                {% endwith %}
                             {% endfor %}
+                        {% else %}
+                        <div class="col-12">
+                            <div class="d-flex align-items-center justify-content-between py-2 px-4 mb-3">
+                                <h3 class="h4 m-0">Нет статей</h3>
+                            </div>
                         </div>
-                    {% endif %}
-                    <!-- Comment List End -->
-
-                    {% if user.is_authenticated %}
-                    <!-- Comment Form Start -->
-                    <div class="bg-light mb-3" style="padding: 30px;">
-                        <h3 class="mb-4">Оставьте комментарий</h3>
-                            <div class="form-group">
-                                <!-- <label for="message">Комментарий *</label> -->
-                                <!-- <textarea id="message" cols="30" rows="5" class="form-control"></textarea> -->
-                                {{ form.message.errors }}
-                                {{ form.message }}
-                            </div>
-                            {{ form.non_field_errors }}
-                            <ul class="errorlist">
-                                {% if form.non_field_errors %}
-                                    <li>{{ form.non_field_errors }}</li>
-                                {% endif %}
-                                {% for field in form %}
-                                    {% if field.errors %}
-                                        <li>
-                                            {{ field.label }}
-                                            <ul class="errorlist">
-                                                {% for error in field.errors %}
-                                                    <li>{{ error }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
-                            <div class="form-group mb-0">
-                                <input type="submit" name="comment_add" value="Отправить"
-                                    class="btn btn-primary font-weight-semi-bold py-2 px-3">
-                            </div>
+                        {% endif %}
                     </div>
-                    <!-- Comment Form End -->
-                    {% else %}
-                    {% endif %}
+
+                    <!--
+                    <div class="mb-3">
+                        <a href=""><img class="img-fluid w-100" src="{% static 'img/ads-700x70.jpg' %}" alt=""></a>
+                    </div>
+                    -->
+
+                    <!--
+                    <div class="row">
+                        <div class="col-12">
+                            <nav aria-label="Page navigation">
+                              <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                  <a class="page-link" href="#" aria-label="Previous">
+                                    <span class="fa fa-angle-double-left" aria-hidden="true"></span>
+                                    <span class="sr-only">Previous</span>
+                                  </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                  <a class="page-link" href="#" aria-label="Next">
+                                    <span class="fa fa-angle-double-right" aria-hidden="true"></span>
+                                    <span class="sr-only">Next</span>
+                                  </a>
+                                </li>
+                              </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    -->
                 </div>
 
-                <div class="col-lg-4 pt-3 pt-lg-0">
+                <!-- <div class="col-lg-4 pt-3 pt-lg-0"> -->
                     <!-- Social Follow Start -->
                     <!--
                     <div class="pb-3">
@@ -283,9 +272,9 @@
                     </div>
                     -->
                     <!-- Tags End -->
-                </div>
+                <!-- </div> -->
             </div>
         </div>
     </div>
-    </form>
     <!-- News With Sidebar End -->
+{% endblock %}

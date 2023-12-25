@@ -41,6 +41,21 @@
                                        href="{% url 'main:profile_articles' %}" id="profle_articles">Мои статьи</a>
                                     <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
                                        href="{% url 'main:article_create' %}"  id="new_article">Новая статья</a>
+                                    {% if user.groups.all.0|escape == 'Читатели' or user.groups.all.0|escape == 'Запрос_На_Писатели' %}
+                                        <form method="post">
+                                            {% csrf_token %}
+                                            {% if user.groups.all.0|escape == 'Читатели' %}
+                                                <button class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2" type="submit">
+                                                    Запрос на Писателя
+                                                </button>
+                                            {% endif %}
+                                            {% if user.groups.all.0|escape == 'Запрос_На_Писатели' %}
+                                                <button type="submit" class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2">
+                                                    Отменить запрос
+                                                </button>
+                                            {% endif %}
+                                        </form>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>

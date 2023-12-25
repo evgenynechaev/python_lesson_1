@@ -24,6 +24,7 @@ python -m pip install django-betterforms3
 python -m pip install "psycopg[binary]"
 python -m pip install django-environ
 python -m pip install setuptools
+python -m pip install django-environ
 # python -m pip install django-bootstrap4
 # python -m pip install crispy-bootstrap4
 python -m pip install Pillow
@@ -98,3 +99,13 @@ application = get_wsgi_application()
 https://evgen77.pythonanywhere.com/
 MySQL
 reltcybr
+
+
+{% static ''
+
+
+GIT
+workon »м€ среды
+git init
+git remote add origin —сылка на репозиторий
+git pull
