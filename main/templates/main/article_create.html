@@ -6,6 +6,7 @@
         <div class="container">
             <nav class="breadcrumb bg-transparent m-0 p-0">
                 <a class="breadcrumb-item" href="{% url 'main:home' %}">Главная</a>
+                <a class="breadcrumb-item" href="{% url 'main:profile' %}">Профиль</a>
                 <span class="breadcrumb-item active">Новая статья</span>
             </nav>
         </div>
@@ -17,8 +18,9 @@
     <!-- Article Start -->
     <div class="container-fluid py-3">
         <div class="container">
-            <div class="bg-light py-2 px-4 mb-3">
+            <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Новая статья</h3>
+                <a class="text-primary font-weight-medium text-decoration-none" href="{% url 'main:profile' %}">Профиль пользователя</a>
             </div>
             <div class="row">
                 <div class="col-md-12">

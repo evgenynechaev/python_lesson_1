@@ -18,10 +18,13 @@
     <!-- Profile Start -->
     <div class="container-fluid py-3">
         <div class="container">
-            <div class="bg-light py-2 px-4 mb-3">
+            <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Профиль пользователя</h3>
+                <a class="text-primary font-weight-medium text-decoration-none"
+                   href="{% url 'main:profile_articles' %}">
+                    Статьи пользователя
+                </a>
             </div>
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="contact-form bg-light mb-3" style="padding: 30px;">
@@ -31,12 +34,10 @@
                         <div class="form-row">
                             <div class="col-md-12">
                                 <div class="btn-group">
-                                    <!--
-                                    <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="change">Изменить</button>
-                                    <button class="btn btn-primary font-weight-semi-bold px-4" style="height: 50px;" type="submit" id="posts">Мои статьи</button>
-                                    -->
                                     <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
                                        href="{% url 'main:profile_update' %}" id="profile_update">Изменить профиль</a>
+                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                       href="{% url 'main:profile_favorites' %}" id="profle_favorites">Избранное</a>
                                     <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
                                        href="{% url 'main:profile_articles' %}" id="profle_articles">Мои статьи</a>
                                     <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"

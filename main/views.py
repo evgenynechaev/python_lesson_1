@@ -45,13 +45,29 @@ def navbar_active(page: str):
 
 
 def get_db_lists():
-    user_list = User.objects.all().values('id', 'username', 'first_name', 'last_name')
+
+    # user_list = User.objects.filter(groups__name='Писатели').all().values('id', 'username', 'first_name', 'last_name')
+    # user_list = User.objects.annotate(
+    #     no_of_pub = Count('id', filter=Q(author__status="PUBLISHED")),
+    #     no_of_books_on_hold = Count('id', filter=Q(author__status="ON_HOLD")).
+    #     filter(groups__name='Писатели').all().values('id', 'username', 'first_name', 'last_name')
+    # authors = models.Article.objects.all().values('created_by').annotate(total=Count('created_by'), distinct=True).order_by('created_by__username')
+    # authors = models.Article.objects.all().values('created_by').annotate(total=Count('created_by')).order_by('created_by__username')
+    # authors = models.Article.objects.all().values('created_by__last_name').annotate(total=Count('created_by')).order_by('created_by__username')
+    # authors = models.Article.objects.all().distinct('created_by')
+    # q = ProductOrder.objects.values('Category').distinct()
+    # authors = User.objects.annotate(
+    #     no_of_pub=Count('id')
+    # ).filter(no_of_pub__gt=0).order_by('-no_of_pub')
+    user_list: list = []
+    authors = User.objects.filter(groups__name='Писатели').order_by('username').all()
+    for author in authors:
+        articles_count = models.Article.objects.filter(created_by=author).count()
+        if articles_count > 0:
+            user_list.append(author)
+
     category_list = models.Category.objects.all()
     tag_list = models.Tag.objects.all()
-    # print('user_list')
-    # print(user_list)
-    # print('category_list')
-    # print(category_list)
     return {
         'user_list': user_list,
         'category_list': category_list,
@@ -116,7 +132,7 @@ class CategoriesView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         category_article_list: list = []
         for category in models.Category.objects.all().values('pk', 'title'):
-            article_list = models.Article.objects.filter(category=category.get('pk'))[:4]
+            article_list = models.Article.objects.filter(category=category.get('pk'))[:2]
             if article_list.exists():
                 category_article_list.append({
                     'category': category,
@@ -138,7 +154,6 @@ class CategoryView(generic.ListView):
     template_name = 'main/category.html'
     model = models.Article
     context_object_name = 'article_list'
-    paginate_by = 2
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
@@ -559,23 +574,60 @@ class UserView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         pk = self.kwargs.get('pk')
-        account = None
+        writer_account = None
         user_object = User.objects.filter(pk=pk)
         if not user_object.exists():
             raise Http404
-        user = user_object.get()
+        writer = user_object.get()
         # print(f'{user=}')
         account_object = models.Account.objects.filter(pk=pk)
         if account_object.exists():
-            account = account_object.get()
-        article_list = models.Article.objects.filter(created_by=pk).order_by('-created_at')
+            writer_account = account_object.get()
+        # article_list = models.Article.objects.filter(created_by=pk).order_by('-created_at')
         context = super().get_context_data(**kwargs)
         context.update({
             'title': 'Профиль автора',
             'navbar': navbar_active('user'),
-            'user': user,
-            'account': account,
-            'article_list': article_list,
+            'writer': writer,
+            'writer_account': writer_account,
+            # 'article_list': article_list,
+        })
+        context.update(get_db_lists())
+        return context
+
+
+class UserArticlesView(generic.ListView):
+    template_name = 'main/user_articles.html'
+    model = models.Article
+    context_object_name = 'article_list'
+    paginate_by = 4
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        # subquery = models.FavoriteArticle.objects.filter(article=OuterRef('pk'), created_by=self.request.user).count()
+        # .annotate(
+        #     name=Subquery(
+        #         Team.objects.filter(
+        #             id=OuterRef('team_id')
+        #         ).values('name')
+        # return models.Article.objects.filter(category=pk).order_by('-created_at').annotate(
+        #         favorites_count=Subquery(
+        #             models.FavoriteArticle.objects.filter(
+        #                 article=OuterRef('id'), created_by=self.request.user).annotate(
+        #                     count=Count('id')).values('count')
+        #         )
+        # )
+        return models.Article.objects.filter(
+            created_by=pk).order_by('-created_at')  # .annotate(favorites_count=Subquery(subquery))
+
+    def get_context_data(self, **kwargs):
+        pk = self.kwargs.get('pk')
+        writer = User.objects.get(pk=pk)
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'title': 'Статьи автора',
+            'navbar': navbar_active('user'),
+            'writer': writer,
         })
         context.update(get_db_lists())
         return context
@@ -630,6 +682,7 @@ class ArchiveArticleView(generic.dates.ArchiveIndexView):
     context_object_name = 'article_list'
     date_field = 'created_at'
     allow_future = False
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -648,6 +701,7 @@ class ArchiveArticleYearView(generic.dates.YearArchiveView):
     date_field = 'created_at'
     make_object_list = True
     allow_future = False
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -666,6 +720,7 @@ class ArchiveArticleMonthView(generic.dates.MonthArchiveView):
     month_format = '%m'
     date_field = 'created_at'
     allow_future = False
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -685,6 +740,7 @@ class ArchiveArticleDayView(generic.dates.DayArchiveView):
     day_format = '%d'
     date_field = 'created_at'
     allow_future = False
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

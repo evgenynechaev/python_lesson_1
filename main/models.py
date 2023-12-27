@@ -188,13 +188,7 @@ class Article(BaseModel):
 
     def tag_list(self):
         tags = ' '.join(self.tags.all())
-        # print('tags')
-        # print(tags)
         return tags
-        # s = ''
-        # for t in self.tags.all():
-        #     s+=t.title+' '
-        # return s
 
     def tag_list_str(self):
         tags = ', '.join(self.tags.all().values_list('title', flat=True))
@@ -204,8 +198,8 @@ class Article(BaseModel):
 
     class Meta:
         ordering = ['title', 'created_at']
-        verbose_name = 'Article (Статья)'
-        verbose_name_plural = 'Articles (Статьи)'
+        verbose_name = 'Статья'
+        verbose_name_plural = 'Статьи'
 
 
 class Comment(BaseModel):

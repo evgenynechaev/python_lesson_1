@@ -8,9 +8,6 @@ app_name = 'main'
 urlpatterns = [
     path('', views.IndexView.as_view(), name='home'),
 
-    # path('signup/', views.SignUpView.as_view(), name='signup'),
-
-    # path('categories/', views.categories, name='categories'),
     path('categories/', views.CategoriesView.as_view(), name='categories'),
 
     # path('category/<int:id>', views.category, name='category'),
@@ -24,20 +21,13 @@ urlpatterns = [
     re_path(r'^find/$', views.FindView.as_view(), name='find'),
     re_path(r'^tags/$', views.TagsView.as_view(), name='tags'),
 
-    # path('news/<int:pk>', views.news, name='news'),
-    # path('news/<int:pk>', views.ArticleView.as_view(), name='news'),
-
-    # path('about/', views.about, name='about'),
-
-    # path('contacts/', views.contacts, name='contacts'),
     path('contacts/', views.ContactView.as_view(), name='contacts'),
-
     path('about/', views.AboutView.as_view(), name='about'),
 
-    path('user/<int:pk>', views.UserView.as_view(), name='user'),
+    path('writer/<int:pk>/', views.UserView.as_view(), name='user'),
+    path('writer/<int:pk>/articles/', views.UserArticlesView.as_view(), name='user_articles'),
 
     path('profile/', views.ProfileView.as_view(), name='profile'),
-    # path('profile/update/', views.ProfileUpdateView.as_view(), name='profile_update'),
     path('profile/update/', views.ProfileUpdateMultiView.as_view(), name='profile_update'),
     path('profile/articles/', views.ProfileArticlesView.as_view(), name='profile_articles'),
     path('profile/favorites/', views.ProfileFavoritesView.as_view(), name='profile_favorites'),

@@ -18,18 +18,35 @@
     <!-- Profile Start -->
     <div class="container-fluid py-3">
         <div class="container">
-            <div class="bg-light py-2 px-4 mb-3">
+            <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Профиль автора</h3>
+                <a class="text-primary font-weight-medium text-decoration-none"
+                   href="{% url 'main:user_articles' pk=writer.id %}">
+                    Статьи автора
+                </a>
             </div>
 
             <div class="row">
                 <div class="col-md-12">
                     <div class="contact-form bg-light mb-3" style="padding: 30px;">
-                        {% include 'main/part_profile.html' %}
+                        {% include 'main/part_writer.html' %}
+
+                        <div class="form-row">
+                            <div class="col-md-12">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                       href="{% url 'main:user_articles' pk=writer.id %}" id="profle_articles">
+                                        Статьи автора
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
+            {% comment %}
             <div class="bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Статьи автора</h3>
             </div>
@@ -46,6 +63,7 @@
                     </div>
                 {% endif %}
             </div>
+            {% endcomment %}
         </div>
     </div>
     <!-- Profile End -->

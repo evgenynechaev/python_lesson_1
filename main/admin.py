@@ -1,5 +1,45 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User, Group
+
 from . import models
+
+
+def set_writer(model, request, queryset):
+    group = Group.objects.get(name='Писатели')
+    for user in queryset:
+        user.groups.set([group])
+
+
+set_writer.short_description = "Разрешить пользователю написание статей"
+
+
+def set_reader(model, request, queryset):
+    group = Group.objects.get(name='Читатели')
+    for user in queryset:
+        user.groups.set([group])
+
+
+set_reader.short_description = "Перевести пользователя в Читатели"
+
+
+class CustomUserAdmin(UserAdmin):
+    actions = set_writer, set_reader,
+    list_display = 'username', 'first_name', 'last_name', 'email', '_groups', 'is_staff',
+    list_filter = 'username', 'email',
+
+    def _groups(self, row):
+        return ', '.join(row.groups.all().values_list('name', flat='True'))
+
+    _groups.short_description = 'Группы'
+
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+
+
+# admin.site.unregister(User)
+# admin.site.register(User, CustomUserAdmin)
 
 
 class AccountAdmin(admin.ModelAdmin):
@@ -36,7 +76,7 @@ class ArticleAdmin(admin.ModelAdmin):
     ordering = '-created_at', 'title', 'created_by',
     filter_horizontal = 'tags',
 
-    def	_tags(self, row):
+    def _tags(self, row):
         return ', '.join(row.tags.all().values_list('title', flat='True'))
 
     def save_model(self, request, obj, form, change):
