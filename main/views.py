@@ -154,6 +154,7 @@ class CategoryView(generic.ListView):
     template_name = 'main/category.html'
     model = models.Article
     context_object_name = 'article_list'
+    paginate_by = 4
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
