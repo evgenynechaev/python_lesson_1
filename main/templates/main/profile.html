@@ -20,10 +20,12 @@
         <div class="container">
             <div class="d-flex align-items-center justify-content-between bg-light py-2 px-4 mb-3">
                 <h3 class="m-0">Профиль пользователя</h3>
-                <a class="text-primary font-weight-medium text-decoration-none"
-                   href="{% url 'main:profile_articles' %}">
-                    Статьи пользователя
-                </a>
+                {% if user.groups.all.0|escape == 'Писатели' %}
+                    <a class="text-primary font-weight-medium text-decoration-none"
+                       href="{% url 'main:profile_articles' %}">
+                        Статьи пользователя
+                    </a>
+                {% endif %}
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -38,10 +40,12 @@
                                        href="{% url 'main:profile_update' %}" id="profile_update">Изменить профиль</a>
                                     <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
                                        href="{% url 'main:profile_favorites' %}" id="profle_favorites">Избранное</a>
-                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
-                                       href="{% url 'main:profile_articles' %}" id="profle_articles">Мои статьи</a>
-                                    <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
-                                       href="{% url 'main:article_create' %}"  id="new_article">Новая статья</a>
+                                    {% if user.groups.all.0|escape == 'Писатели' %}
+                                        <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                           href="{% url 'main:profile_articles' %}" id="profle_articles">Мои статьи</a>
+                                        <a class="btn btn-primary font-weight-semi-bold py-2 px-3 mr-2"
+                                           href="{% url 'main:article_create' %}"  id="new_article">Новая статья</a>
+                                    {% endif %}
                                     {% if user.groups.all.0|escape == 'Читатели' or user.groups.all.0|escape == 'Запрос_На_Писатели' %}
                                         <form method="post">
                                             {% csrf_token %}

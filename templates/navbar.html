@@ -60,11 +60,13 @@
                                 {% endif %}
                             </a>
                             <div class="dropdown-menu rounded-0 m-0">
-                                <a href="{% url 'main:article_create' %}" class="dropdown-item {{ navbar.article_create }}">Новая статья</a>
-                                <div class="dropdown-divider"></div>
-                                <a href="{% url 'main:profile' %}" class="dropdown-item {{ navbar.profile }}">Профиль</a>
+                                {% if user.groups.all.0|escape == 'Писатели' %}
+                                    <a href="{% url 'main:article_create' %}" class="dropdown-item {{ navbar.article_create }}">Новая статья</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{% url 'main:profile_articles' %}" class="dropdown-item {{ navbar.profile_articles }}">Мои статьи</a>
+                                {% endif %}
                                 <a href="{% url 'main:profile_favorites' %}" class="dropdown-item {{ navbar.profile_favorites }}">Избранное</a>
-                                <a href="{% url 'main:profile_articles' %}" class="dropdown-item {{ navbar.profile_articles }}">Мои статьи</a>
+                                <a href="{% url 'main:profile' %}" class="dropdown-item {{ navbar.profile }}">Профиль</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="{% url 'logout' %}" class="dropdown-item">Выход</a>
                             </div>
