@@ -3,7 +3,7 @@ import django
 
 from django.conf import settings
 from django.contrib.auth import mixins
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User, Group, AnonymousUser
 from django.db import connection
 from django.db.models import Q
 from django.http import HttpResponse, Http404
@@ -226,7 +226,7 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
         # post = request.POST
         # print(post)
         user = request.user
-        # print(user)
+        print(user)
         article = self.get_object()
         if 'favorites_add' in request.POST:
             # print('favorites_add')
@@ -255,10 +255,18 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         # print('get_context_data')
         instance = self.get_object()
+        # print(instance)
         instance.views.count += 1
         instance.views.save()
+        # print(f'{self.request.user=}')
 
         comment_list = models.Comment.objects.filter(article=instance).order_by('-created_at')
+        favorites_count = None
+        if self.request.user.is_authenticated:
+            favorites_count = models.FavoriteArticle.objects.filter(
+                article=instance,
+                created_by=self.request.user).count()
+        # print(f'{favorites_count=}')
 
         # from django.db.models import F
         # from myapp.models import Product
@@ -272,8 +280,7 @@ class ArticleDetailView(generic.edit.FormMixin, generic.DetailView):
             'navbar': navbar_active('article'),
             'article_count_views': instance.views.count,
             'comment_list': comment_list,
-            'favorites_count': models.FavoriteArticle.objects.filter(article=instance,
-                                                                     created_by=self.request.user).count()
+            'favorites_count': favorites_count
         })
         context.update(get_db_lists())
         return context
